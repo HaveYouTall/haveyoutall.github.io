@@ -3,20 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Havey0uTall</title>
+  <title>hexo博客搭建问题记录 | Havey0uTall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="spfk-主题配置相关问题每个文章最后的copyright显示">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
+<meta property="og:title" content="hexo博客搭建问题记录">
 <meta property="og:url" content="https://haveyoutall.github.io/2021/07/30/hello-world/index.html">
 <meta property="og:site_name" content="Havey0uTall">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="spfk-主题配置相关问题每个文章最后的copyright显示">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/07/30/hello-world/image-20210812101838429.png">
 <meta property="article:published_time" content="2021-07-30T03:05:11.889Z">
-<meta property="article:modified_time" content="2021-07-30T03:05:11.889Z">
+<meta property="article:modified_time" content="2021-08-12T02:59:52.464Z">
 <meta property="article:author" content="Havey0uTall">
 <meta property="article:tag" content="Binary | Blockchain | Crypto">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haveyoutall.github.io/2021/07/30/hello-world/image-20210812101838429.png">
   
     <link rel="alternative" href="/atom.xml" title="Havey0uTall" type="application/atom+xml">
   
@@ -122,11 +124,9 @@
                         
                             <li><a href="/">博客首页</a></li>
                         
-                            <li><a href="/archives/">文章-时间分类</a></li>
+                            <li><a href="/archives/">所有文章</a></li>
                         
-                            <li><a href="/tags/">文章-标签分类</a></li>
-                        
-                            <li><a href="/categories/">文章-类型分类</a></li>
+                            <li><a href="/tags/">标签分类</a></li>
                         
                         </ul>
                     </nav>
@@ -146,7 +146,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/ctf-pwn/" style="font-size: 10px;">ctf-pwn</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a>
+                        <a href="/tags/Ubuntu16/" style="font-size: 20px;">Ubuntu16</a> <a href="/tags/ctf-pwn/" style="font-size: 10px;">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 20px;">ctf_tools</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/one-gadget/" style="font-size: 10px;">one_gadget</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
                     </div>
                 </section>
                 
@@ -195,11 +195,9 @@
                 
                     <li><a href="/">博客首页</a></li>
                 
-                    <li><a href="/archives/">文章-时间分类</a></li>
+                    <li><a href="/archives/">所有文章</a></li>
                 
-                    <li><a href="/tags/">文章-标签分类</a></li>
-                
-                    <li><a href="/categories/">文章-类型分类</a></li>
+                    <li><a href="/tags/">标签分类</a></li>
                 
                 <div class="clearfix"></div>
                 </ul>
@@ -235,7 +233,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      hexo博客搭建问题记录
     </h1>
   
 
@@ -243,6 +241,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/hexo/">hexo</a>
+    </div>
+
 
         
         <div class="clearfix"></div>
@@ -252,7 +254,27 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+        <h2 id="spfk-主题配置相关问题"><a href="#spfk-主题配置相关问题" class="headerlink" title="spfk-主题配置相关问题"></a>spfk-主题配置相关问题</h2><p>每个文章最后的copyright显示</p>
+<span id="more"></span>
+
+<p>样例长这样</p>
+<p><img src="/2021/07/30/hello-world/image-20210812101838429.png" alt="image-20210812101838429"></p>
+<p>主要的问题是，文章作者的地方一直出不来（图片上是我修改过后的，所以出来了。）</p>
+<p>需要做如下操作：</p>
+<ul>
+<li><p>先看原来的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">\layout\_partial\post\nav.ejs</span><br><span class="line"></span><br><span class="line">&lt;% if (post.original != false &amp;&amp; !is_page())&#123; %&gt;</span><br><span class="line">    &lt;div class=&quot;copyright&quot;&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;本文标题:&lt;/span&gt;&lt;a href=&quot;&lt;%- url_for(post.path) %&gt;&quot;&gt;&lt;%= post.title %&gt;&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;文章作者:&lt;/span&gt;&lt;a href=&quot;/&quot; title=&quot;请访问 &lt;%=theme.author%&gt; 博客&quot;&gt;&lt;%=theme.author%&gt;&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;!-- &lt;p&gt;&lt;span&gt;发布时间:&lt;/span&gt;&lt;%= post.date.format(&quot;YYYY年MM月DD日 - HH时mm分&quot;) %&gt;&lt;/p&gt; --&gt;</span><br><span class="line">        &lt;!-- &lt;p&gt;&lt;span&gt;最后更新:&lt;/span&gt;&lt;%= post.updated.format(&quot;YYYY年MM月DD日 - HH时mm分&quot;) %&gt;&lt;/p&gt; --&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;span&gt;原始链接:&lt;/span&gt;&lt;a class=&quot;post-url&quot; href=&quot;&lt;%- url_for(post.path) %&gt;&quot; title=&quot;&lt;%= post.title %&gt;&quot;&gt;&lt;%= post.permalink %&gt;&lt;/a&gt;</span><br><span class="line">            &lt;span class=&quot;copy-path&quot; data-clipboard-text=&quot;原文: &lt;%= post.permalink %&gt;　　作者: &lt;%=theme.author%&gt;&quot; title=&quot;点击复制文章链接&quot;&gt;&lt;i class=&quot;fa fa-clipboard&quot;&gt;&lt;/i&gt;&lt;/span&gt;</span><br><span class="line">            &lt;script src=&quot;/js/clipboard.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">            &lt;script&gt; var clipboard = new Clipboard(&#x27;.copy-path&#x27;); &lt;/script&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;span&gt;许可协议:&lt;/span&gt;&lt;i class=&quot;fa fa-creative-commons&quot;&gt;&lt;/i&gt; &lt;a rel=&quot;license&quot; href=&quot;http://creativecommons.org/licenses/by-nc-sa/3.0/cn/&quot; title=&quot;中国大陆 (CC BY-NC-SA 3.0 CN)&quot;&gt;&quot;署名-非商用-相同方式共享 3.0&quot;&lt;/a&gt; 转载请保留原文链接及作者。</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">&lt;% if (post.prev || post.next)&#123; %&gt;</span><br><span class="line">&lt;nav id=&quot;article-nav&quot;&gt;</span><br><span class="line">  &lt;% if (post.prev)&#123; %&gt;</span><br><span class="line">    &lt;a href=&quot;&lt;%- url_for(post.prev.path) %&gt;&quot; id=&quot;article-nav-newer&quot; class=&quot;article-nav-link-wrap&quot;&gt;</span><br><span class="line">      &lt;strong class=&quot;article-nav-caption&quot;&gt;&lt;&lt;/strong&gt;</span><br><span class="line">      &lt;div class=&quot;article-nav-title&quot;&gt;</span><br><span class="line">        &lt;% if (post.prev.title)&#123; %&gt;</span><br><span class="line">          &lt;%= post.prev.title %&gt;</span><br><span class="line">        &lt;% &#125; else &#123; %&gt;</span><br><span class="line">          (no title)</span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/a&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">  &lt;% if (post.next)&#123; %&gt;</span><br><span class="line">    &lt;a href=&quot;&lt;%- url_for(post.next.path) %&gt;&quot; id=&quot;article-nav-older&quot; class=&quot;article-nav-link-wrap&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;article-nav-title&quot;&gt;&lt;%= post.next.title %&gt;&lt;/div&gt;</span><br><span class="line">      &lt;strong class=&quot;article-nav-caption&quot;&gt;&gt;&lt;/strong&gt;</span><br><span class="line">    &lt;/a&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">&lt;/nav&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>问题就在<code>文章作者:</code>那一行，因为我们theme的<code>_config.yml</code>文件中没有author这个变量，所以<code>theme.author</code>自然就没有显示。</p>
+<p>将其改成<code>post.author</code>,然后在每个文章开头都加上author的摘要，这样就可以成功显示出作者名字了。</p>
+</li>
+<li><p>修改后部分代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if (post.original != false &amp;&amp; !is_page())&#123; %&gt;</span><br><span class="line">    &lt;div class=&quot;copyright&quot;&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;本文标题:&lt;/span&gt;&lt;a href=&quot;&lt;%- url_for(post.path) %&gt;&quot;&gt;&lt;%= post.title %&gt;&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;文章作者:&lt;/span&gt;&lt;a href=&quot;&lt;%- config.root %&gt;&quot; title=&quot;请访问 &lt;%= post.author %&gt; 的个人博客&quot;&gt;&lt;%= post.author %&gt;&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;发布时间:&lt;/span&gt;&lt;%= post.date.format(&quot;YYYY年MM月DD日 - HH时mm分&quot;) %&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;&lt;span&gt;最后更新:&lt;/span&gt;&lt;%= post.updated.format(&quot;YYYY年MM月DD日 - HH时mm分&quot;) %&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;span&gt;原始链接:&lt;/span&gt;&lt;a class=&quot;post-url&quot; href=&quot;&lt;%- url_for(post.path) %&gt;&quot; title=&quot;&lt;%= post.title %&gt;&quot;&gt;&lt;%= post.permalink %&gt;&lt;/a&gt;</span><br><span class="line">            &lt;span class=&quot;copy-path&quot; data-clipboard-text=&quot;原文: &lt;%= post.permalink %&gt;　　作者: &lt;%=theme.author%&gt;&quot; title=&quot;点击复制文章链接&quot;&gt;&lt;i class=&quot;fa fa-clipboard&quot;&gt;&lt;/i&gt;&lt;/span&gt;</span><br><span class="line">            &lt;script src=&quot;&lt;%- config.root %&gt;js/clipboard.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">            &lt;script&gt; var clipboard = new Clipboard(&#x27;.copy-path&#x27;); &lt;/script&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;span&gt;许可协议:&lt;/span&gt;&lt;i class=&quot;fa fa-creative-commons&quot;&gt;&lt;/i&gt; &lt;a rel=&quot;license&quot; href=&quot;http://creativecommons.org/licenses/by-nc-sa/3.0/cn/&quot; title=&quot;中国大陆 (CC BY-NC-SA 3.0 CN)&quot; target = &quot;_blank&quot;&gt;&quot;署名-非商用-相同方式共享 3.0&quot;&lt;/a&gt; 转载请保留原文链接及作者。</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>文章开头的样例如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 复旦白泽暑期课程 heap 题 第一题</span><br><span class="line">data: 2021-08-11 20:03:00</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">    -</span> ctf-pwn</span><br><span class="line"><span class="bullet">    -</span> heap</span><br><span class="line">categories: ctf</span><br><span class="line"><span class="section">author: Havey0uTall</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
@@ -274,12 +296,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2021/07/30/hello-world/">Hello World</a></p>
-        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>本文标题:</span><a href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></p>
+        <p><span>文章作者:</span><a href="/" title="请访问 Hexo (for hello world) | Havey0uTall 的个人博客">Hexo (for hello world) | Havey0uTall</a></p>
         <p><span>发布时间:</span>2021年07月30日 - 11时05分</p>
-        <p><span>最后更新:</span>2021年07月30日 - 11时05分</p>
+        <p><span>最后更新:</span>2021年08月12日 - 10时59分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2021/07/30/hello-world/" title="Hello World">https://haveyoutall.github.io/2021/07/30/hello-world/</a>
+            <span>原始链接:</span><a class="post-url" href="/2021/07/30/hello-world/" title="hexo博客搭建问题记录">https://haveyoutall.github.io/2021/07/30/hello-world/</a>
             <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/07/30/hello-world/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
@@ -310,7 +332,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#spfk-%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">spfk-主题配置相关问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-World"><span class="toc-number">2.</span> <span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">3.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">3.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">3.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">3.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">3.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -387,7 +409,7 @@
             <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
