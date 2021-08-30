@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Login-未知出处的CTF入门题 | HaveYouTall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前情提要这道题来自我的室友分享，我做完之后感觉挺有意思，分析的过程对于我这个新手菜鸟来说，很有学习意义，因此写个文档记录一下。 这个题是一个ret2text的题，其实不是很难，但是分析的过程对于菜鸟来说还是有点曲折。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Login-未知出处的CTF入门题">
+<meta property="og:url" content="https://haveyoutall.github.io/2021/08/30/login-wp/index.html">
+<meta property="og:site_name" content="HaveYouTall">
+<meta property="og:description" content="前情提要这道题来自我的室友分享，我做完之后感觉挺有意思，分析的过程对于我这个新手菜鸟来说，很有学习意义，因此写个文档记录一下。 这个题是一个ret2text的题，其实不是很难，但是分析的过程对于菜鸟来说还是有点曲折。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830190009432.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830191435263.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830191502689.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830192604670.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830193150533.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830194509430.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830195155742.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830195843784.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830205148244.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830205623904.png">
+<meta property="article:published_time" content="2021-08-30T13:56:48.456Z">
+<meta property="article:modified_time" content="2021-08-30T14:02:08.335Z">
+<meta property="article:author" content="HaveYouTall">
+<meta property="article:tag" content="ctf-pwn">
+<meta property="article:tag" content="stack">
+<meta property="article:tag" content="ret2text">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haveyoutall.github.io/2021/08/30/login-wp/image-20210830190009432.png">
+  
+    <link rel="alternative" href="/atom.xml" title="HaveYouTall" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/Wallpaper.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">HaveYouTall</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Binary | Blockchain | Crypto</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签分类</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/HaveYouTall" title="github">github</a>
+                            
+                                <a class="fl twitter" target="_blank" href="https://twitter.com/HaveYouTall" title="twitter">twitter</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Ubuntu16/" style="font-size: 20px;">Ubuntu16</a> <a href="/tags/ctf-pwn/" style="font-size: 20px;">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 20px;">ctf-tools</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/one-gadget/" style="font-size: 10px;">one_gadget</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/ret2text/" style="font-size: 10px;">ret2text</a> <a href="/tags/stack/" style="font-size: 10px;">stack</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">powered by luuman</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">A rookie who are intrested in binary &amp; blockchain &amp; crypto.</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">HaveYouTall</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/Wallpaper.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">HaveYouTall</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Binary | Blockchain | Crypto</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签分类</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/HaveYouTall" title="github">github</a>
+                    
+                        <a class="twitter" target="_blank" href="https://twitter.com/HaveYouTall" title="twitter">twitter</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-login-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/30/login-wp/" class="article-date">
+      <time datetime="2021-08-30T13:56:48.456Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Login-未知出处的CTF入门题
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ctf/">ctf</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ret2text/" rel="tag">ret2text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>这道题来自我的室友分享，我做完之后感觉挺有意思，分析的过程对于我这个新手菜鸟来说，很有学习意义，因此写个文档记录一下。</p>
+<p>这个题是一个ret2text的题，其实不是很难，但是分析的过程对于菜鸟来说还是有点曲折。</p>
+<span id="more"></span>
+
+<h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><p>首先仔细去分析它应该不是很难，因为从IDA中就可以看到，里面有后门函数<code>Admin:shell(void)</code>。那么基本上可以断定这个题是ret2text，然后就是对菜鸟来说很辛苦的找洞了。</p>
+<ul>
+<li><p>当然我们最最开始还是要checksec一下的，发现<strong>没有PIE</strong>，那这个后门就很好用！</p>
+</li>
+<li><p>然后我们一点点的去分析这个程序是在做什么事情。</p>
+<p><img src="/2021/08/30/login-wp/image-20210830190009432.png" alt="image-20210830190009432"></p>
+<p>从IDA万能的F5中可以看到，在main函数中，程序首先创建了一个Admin对象（从程序的格式就很容易看出是个C++程序），然后再创建一个User对象，最后比较User对象的账户密码是否是Admin，以此来做后面的事情。</p>
+<p>其中，Admin对象存在 <code>v9</code> 变量中，然后拥有两个成员变量，分别是名字 <code>admin</code> 和密码 <code>v10</code>，从程序中也可以看到这个密码是已经告诉我们了 <code>2jctf_pa5sw0rd</code>。</p>
+<p>对于User对象，其存于 <code>login</code> 变量当中，然后会通过两个成员函数<code>read_name</code>和<code>read_password</code>来分别读取这个对象的用户名和密码。</p>
+<p>然后我们可以初步断定，这个地方显然是要输入<code>admin</code>和其对应的密码，才能做后面的一些操作。</p>
+<blockquote>
+<p>会这么想是因为，后面有两次<code>get_password()</code> 操作，然后又有<code>password_checker()</code> 操作。</p>
+</blockquote>
+<p>如果仅仅从我们最常见的栈溢出然后ret2text的思想来看这道题的话，那漏洞就肯定是在这两次输入上。我们可以输入很多内容然后覆盖掉返回地址。</p>
+<p>但是我们仔细分析一下就会知道，这个想法是不行的，因为<code>login</code>变量是存在bss段上的，我们往这个对象里写东西也写不到栈上，更不要说是覆盖返回地址了。</p>
+</li>
+<li><p><strong>那这个地方该怎么办呢？我们的洞到底在哪里？</strong></p>
+<p>莫慌，既然一条路不通，那么我们就想想有没有其他可以的地方。</p>
+<p>那既然在main函数好像没有思路，那我们就看看别的函数找找有没有灵感。</p>
+<p>当我们看到<code>password_checker()</code>的函数内部的时候，我们可以发现一个端倪，具体看下面两个图，第一个图是参数列表，第二个图是函数的内容。</p>
+<p><img src="/2021/08/30/login-wp/image-20210830191435263.png" alt="image-20210830191435263"></p>
+<p><img src="/2021/08/30/login-wp/image-20210830191502689.png" alt="image-20210830191502689"></p>
+<p>从这两张图中我们可以看到，这个函数是传了一个函数指针<code>a1</code>（实际上是函数的指针的指针，我们在分析的时候就简单理解为这是某个函数就好）进来的，然后还有两个参数分别是<code>a2</code> 和<code>a3</code>。</p>
+<p>然后看函数的功能，显然函数对<code>a2</code> 和<code>a3</code>做了比较，如果相等就有下面的一些操作，然后就调用了<code>a1</code>所对应的函数（我之所以用“对应”是因为这个需要两次解析地址才能找到函数地址，所以用“指向”好像不是很贴切，因此我用了“对应”）。</p>
+<p>那么看到这里，我们好像又萌生了新的想法，是不是可以考虑改变<code>a1</code>的指向呢？这样不就可以执行后门了么？</p>
+</li>
+<li><p><strong>为了支撑我们的这个想法，我们下面就要验证，<code>a1</code>的指向是否真的可以改变。</strong></p>
+<p>于是我们回到main函数，我们可以看到，<code>a1</code>这个参数是哪里来的呢？从函数调用的过程可以看到，显然是从<code>v8</code>传进来的，而<code>v8</code>又是从<code>V3</code>来的，<code>v3</code> 又是从<code>(void (*)(void))main::&#123;lambda(void)#1&#125;::operator void (*)(void) const(&amp;v7);</code>这个奇怪的操作来的。</p>
+<p>然后我们惊喜的发现，在通过<code>v3</code>得到<code>v8</code>的操作函数中（如下图），实际上没有什么其他的操作，它就是对变量<code>v2</code>取了一个地址，然后返回，而<code>v2</code>是存在栈上的。</p>
+<p><img src="/2021/08/30/login-wp/image-20210830192604670.png" alt="image-20210830192604670"></p>
+<p>然后我们大致又可以猜到，main函数中<code>v3</code>其实就是跟<code>v7</code>地址有关的一个值（从那个操作中可以猜测）。</p>
+<p>那么我们大致可以分析得到，我们说不定真的可以修改栈上的数据，达到让这个得到<code>v8</code>的值受我们控制。</p>
+<p>然后我们再来看<code>read_password</code>函数，里面确实显示往栈上读取内容，读79个字节。</p>
+<p><img src="/2021/08/30/login-wp/image-20210830193150533.png" alt="image-20210830193150533"></p>
+<p>那么作为菜鸟，直接分析程序好像是不能更精确的分析到读多少个字节可以让main函数中<code>v8</code>的值受控，因此干脆直接写个程序，在输入密码的时候多输入一点内容，看看最后调用的函数地址是不是受到我们影响了。</p>
+<blockquote>
+<p>当然，有人可能会问，为啥我不在<code>read_name</code>函数中做操作呢。那首先，因为这两个函数肯定都是对栈上做操作，我如果前面操作了，后面再写东西可能会把之前写好的覆盖了，可能会白忙活，所以这里我们首先考虑用后面的函数来写。</p>
+<p>除非做这个题需要两次输入的组合拳，如果是那样的话，我们其实也可以先尝试利用后面那个函数的输入能不能达到效果。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="调试验证"><a href="#调试验证" class="headerlink" title="调试验证"></a>调试验证</h2><p>为了验证我们上面那个方法是否正确，我首先对程序进行了调试。</p>
+<p>我选择的payload如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="string">&quot;2jctf_pa5sw0rd\x00&quot;</span></span><br><span class="line">p += <span class="string">&#x27;a&#x27;</span> * <span class="number">0x50</span></span><br></pre></td></tr></table></figure>
+
+<p>之所以再密码后面加上\x00是为了截断，防止在strcmp的时候把后面的其他内容当成密码导致匹配失败。</p>
+<p>然后在将这个payload送过去之后，我们来看看栈上是什么情况。我们直接将断电下在最后调用函数之前，我们可以看到能来到这一步说明我们密码的匹配正确了，然后我们就看看，我们的函数地址是不是受到影响了。</p>
+<p>这里我们直接查看<code>$rbp-0x68</code>位置的内容，因为这个位置存了那个<strong>函数的指针的指针</strong>。</p>
+<p><img src="/2021/08/30/login-wp/image-20210830194509430.png" alt="image-20210830194509430"></p>
+<p>从这个图里我们可以看到，标识1所示的区域就是我们填充的内容，前面的部分是密码的内容，后面的部分就全部都是字符a。</p>
+<p>然后我们也确实看到，标识2的内容是函数指针的指针，指向了标识3所示的内容，标识3就是函数指针，指向的内容是标识4里面的内容，所以说，标识4里面的内容就是我们的函数地址，可以看到函数地址的部分被外面写成了一堆字符’a’，由此可以说明外面覆盖成功了。</p>
+<blockquote>
+<p>注意：这里我是怎么知道<code>$rbp-0x68</code>的位置存的是函数指针的指针呢？当然是从汇编里面看出来的。</p>
+<p>我们这里在分析的时候还需要看看最后三个参数的<code>password_checker()</code>函数里面是怎么调用<code>a1</code>函数的。汇编部分如下：</p>
+<p><img src="/2021/08/30/login-wp/image-20210830195155742.png" alt="image-20210830195155742"></p>
+<p>显然我们知道，这个函数的地址是从<code>$rbp-0x68</code>的地方解析了两次得到最终的地址的。</p>
+</blockquote>
+<p>由此我们知道了，我只要在最后几个字节的地方写上后门函数地址，我们就可以成功了。</p>
+<h2 id="遭遇不测"><a href="#遭遇不测" class="headerlink" title="遭遇不测"></a>遭遇不测</h2><p>从我们上面的分析来看，一切都很顺畅，但是当我们再往下调试之后，我们就会发现不测风云出现了。</p>
+<p>我们从上面的调试结果来看，确实分析的很正确，但是一旦我们执行了<code>snprintf</code>函数之后，一切就又模糊了起来。其执行之后，栈里面变成了这样：</p>
+<p><img src="/2021/08/30/login-wp/image-20210830195843784.png" alt="image-20210830195843784"></p>
+<p>上图表示了，我们执行完标识1 处的<code>snprintf</code> 函数之后，标识2里面栈的内容发生了很奇怪的改变，我们同时可以看到<code>a1</code>函数的位置，也就是标识2最后的内容变得不再是受我们控制了，也就是说，虽然我们写入了全是a，但是最后的内容好像被什么奇怪的东西覆盖了。</p>
+<p><strong>那这到底是什么问题呢？</strong></p>
+<p>于是我查阅了<code>snprintf</code>函数的源码，发现里面调用了一下<code>vsnprintf</code>函数，于是我又查了一下<code>vsnprintf</code>的源码，终于发现了问题所在。大家也可以自己去看看这个部分的源码。</p>
+<p>函数的声明是这样的：<code>int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)</code></p>
+<p>当<code>buf</code>指针和<code>args</code>中的参数一样的时候，就会出现奇怪的问题。在这个题目里面，显然这两个都是变量<code>s</code>，这也是出现这个不测风云的原因所在。</p>
+<blockquote>
+<p>虽然我看的是非官方的，是别人贴出来的源码，但是帮助理解这个题目已经很够了。</p>
+</blockquote>
+<p>源码的流程如下：</p>
+<ul>
+<li><p>首先在函数中有一个while循环，不断去解析格式化字符串的内容（看源码我们可以猜测，他会以%为分割，分割出普通的字符串和格式化字符）。在遇到%的时候会截断一下，将前面读取的部分拿出来，然后记录这部分字符串的大小记为<code>read</code>。然后将格式化字符传的指针指向%的这个位置，防止前面读取过的内容重复输出。</p>
+</li>
+<li><p>然后会进入一个swithch的判断，判断读取的这部分格式化字符串的类型，如果是None类型（即不是格式化字符串，是普通的字符串），则直接将<strong>原来格式化字符串指针指向的内容</strong>拷贝到<code>buf</code>字段中，然后将<code>buf</code>指针移到读取后的末尾，以便后面继续追加写入。</p>
+<p><strong>注意噢，这里拷贝的是原来格式化字符串指针指向的内容</strong>，不是我们上面指向%位置的那个指针。所以这里实际上是会把所有的内容都复制过去，<strong>包括%s</strong>。这里就会引起一个问题，首先我们读入的内容是整个格式化字符串，但是buf地址增加的值的其实只有<code>read</code>个。</p>
+<p>在本题中，第一次判断是普通字符串，所以就把内容写到<code>buf</code>数组中了，因此这个时候栈上的内容就变成了<code>Password accepted: %s\naaaaaaaaaa.....</code>。然后<code>buf</code>指针现在实际上是指在%的位置（因为只增加了<code>read</code>个）。</p>
+</li>
+<li><p>在switch之后，会再回到while循环，判断格式化字符串后面是否还有内容。在本例中，现在是遇到了%s。因为是%s，所以读完之后又会截断一下，然后更新格式化字符串的指针位置。</p>
+<p>这个时候，因为有格式化字符串了，再次进入switch的时候，这个类型是字符类型，所以就会开始再格式化字符串参数<code>args</code>中找到对应这个格式化字符的顺序的地方（现在是第一个格式化字符，也就是第一个参数，在本题中也只有一个参数，也就是形参<code>buf</code>本身）。所以就会一直读入直到遇到\x00。这个时候栈的内容就变成了这样</p>
+<p><code>Password accepted: Password accepted: %s\naaaaaaaaaa.....</code></p>
+<p>这个时候<code>buf</code>指向的位置应该就是读入的最后一个字符的位置的后一位了，这个跟上面直接拷贝的不一样，因为是一个个字符读入的，所以<code>buf</code>指针也是一个个累加下去。</p>
+</li>
+<li><p>然后大家感兴趣可以自己再往下分析，那这里显然就出现了套娃的情况。<del>本文在这里就不再赘述了。</del>我懒得继续分析了。</p>
+</li>
+</ul>
+<p><strong>那有这样的奇怪问题的话，我们要怎么修改呢？</strong></p>
+<p>既然我们知道会套娃，那如果我填充的a本身就是截断符\x00呢，那是不是就自然而然的解决问题了呢？</p>
+<p>于是我修改payload为如下所示：</p>
+<blockquote>
+<p>为了清晰的看到我们覆盖的成果和防止出现上面这种套娃的成果，我输入一堆\x00之后再输入a，这样结果更加直观</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="string">&quot;2jctf_pa5sw0rd\x00&quot;</span></span><br><span class="line">p += <span class="string">&#x27;\x00&#x27;</span> * <span class="number">0x20</span></span><br><span class="line">p += <span class="string">&#x27;a&#x27;</span> &amp; <span class="number">0x30</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们再进行调试得到的结果就很正常了：</p>
+<p><img src="/2021/08/30/login-wp/image-20210830205148244.png" alt="image-20210830205148244"></p>
+<p><img src="/2021/08/30/login-wp/image-20210830205623904.png" alt="image-20210830205623904"></p>
+<p>第一张图是执行snprintf函数之前，第二张图是执行后。可以看到结果确实就正常了（虽然<code>Password accepted: </code>）这个字段还是会出现两遍（由格式化字符串的参数<code>args</code>和输入地址<code>buf</code>相同的原因导致）。</p>
+<p>但是我们用\x00来截断的办法确实奏效了（第二张图中的<strong>标识2</strong>的部分就是我们填充的还多余下来的\x00，所以实际上想让这个套娃现象不出现，可以用更少的\x00。<del>当然因为我懒，不如暴力多写几个\x00</del>）。</p>
+<p>而且这个时候我们也看到函数指针对应的内容（<strong>标识3</strong>指向<strong>标识4</strong>指向<strong>标识5</strong>的内容）也还是正常受我们控制，写为字符a了。</p>
+<p>终于问题解决了，下面就是我们修改payload，再<strong>标识5</strong>对应的位置写上后门函数地址就好了！！</p>
+<h2 id="最终写exp了"><a href="#最终写exp了" class="headerlink" title="最终写exp了"></a>最终写exp了</h2><p>payload最终如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="string">&quot;2jctf_pa5sw0rd\x00&quot;</span></span><br><span class="line">p += <span class="string">&#x27;\x00&#x27;</span> * <span class="number">0x20</span></span><br><span class="line">p += <span class="string">&#x27;a&#x27;</span> * (<span class="number">79</span>-<span class="number">0x20</span>-<span class="number">15</span> - <span class="number">7</span>)</span><br><span class="line">p += p64(<span class="number">0x400E88</span>) <span class="comment">#admin shell addr</span></span><br></pre></td></tr></table></figure>
+
+<p>其中第三行，之所以写成这样是因为</p>
+<ul>
+<li><p>首先79是因为在<code>read_password</code>函数里面，只能读取79个字符，多的就不会写到栈里。</p>
+<blockquote>
+<p>注意：这里其实我最开始写的测试的payload长度都是比这个长了。</p>
+</blockquote>
+</li>
+<li><p>然后减去0x20是填充\x00的长度。</p>
+</li>
+<li><p>减去15是字符串<code>&quot;2jctf_pa5sw0rd\x00&quot;</code>的长度。</p>
+</li>
+<li><p>最后减去7是我在调试的过程中发现，减去7刚好让地址写在对应的位置上。</p>
+</li>
+</ul>
+<p>完整的exp如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = process(<span class="string">&quot;./login&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;username: &quot;</span>)</span><br><span class="line">r.send(<span class="string">&quot;admin&quot;</span>+<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">p = <span class="string">&quot;2jctf_pa5sw0rd\x00&quot;</span></span><br><span class="line">p += <span class="string">&#x27;\x00&#x27;</span> * <span class="number">0x20</span></span><br><span class="line">p += <span class="string">&#x27;a&#x27;</span> * (<span class="number">79</span>-<span class="number">0x20</span>-<span class="number">15</span> - <span class="number">7</span>) <span class="comment">#0x50</span></span><br><span class="line"></span><br><span class="line">p += p64(<span class="number">0x400E88</span>) <span class="comment">#admin shell addr</span></span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;password: &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line"></span><br><span class="line">r.send(p+<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><strong>芜湖~终于小功告成了😀！！！！</strong></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个题目对于我这种菜鸟来说，确实锻炼了我的分析能力，让我也了解到了奇怪的<code>snprintf</code>函数，如果输出地址<code>buf</code>和格式化字符串参数<code>args</code>相同会出现套娃现象。</p>
+<h2 id="最后一段用于查找md源文件以便修改"><a href="#最后一段用于查找md源文件以便修改" class="headerlink" title="最后一段用于查找md源文件以便修改"></a>最后一段用于查找md源文件以便修改</h2><blockquote>
+<p>文档查找：login-wp.md</p>
+</blockquote>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a></p>
+        <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
+        <p><span>发布时间:</span>2021年08月30日 - 21时56分</p>
+        <p><span>最后更新:</span>2021年08月30日 - 22时02分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2021/08/30/login-wp/" title="Login-未知出处的CTF入门题">https://haveyoutall.github.io/2021/08/30/login-wp/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/08/30/login-wp/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/08/11/ubuntu16-pwntools/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ubuntu16-pwntools-安装问题</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%83%85%E6%8F%90%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">前情提要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">程序分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-number">3.</span> <span class="toc-text">调试验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%AD%E9%81%87%E4%B8%8D%E6%B5%8B"><span class="toc-number">4.</span> <span class="toc-text">遭遇不测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E5%86%99exp%E4%BA%86"><span class="toc-number">5.</span> <span class="toc-text">最终写exp了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E6%AE%B5%E7%94%A8%E4%BA%8E%E6%9F%A5%E6%89%BEmd%E6%BA%90%E6%96%87%E4%BB%B6%E4%BB%A5%E4%BE%BF%E4%BF%AE%E6%94%B9"><span class="toc-number">7.</span> <span class="toc-text">最后一段用于查找md源文件以便修改</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'luuman',
+      repo: 'luuman.github.io',
+      oauth: {
+        client_id: '',
+        client_secret: '',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2021/08/11/ubuntu16-pwntools/" title="下一篇: ubuntu16-pwntools-安装问题">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2021 HaveYouTall
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >海贼到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 28;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
