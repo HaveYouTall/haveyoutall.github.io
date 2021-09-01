@@ -5,17 +5,17 @@
   
   <title>ciscn_2019_c_1 pwn题记录 | HaveYouTall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。 0x01 程序分析1 - checksec当然第一步还是雷打不动的先checksec一下，养成良好的习惯。 发现这个题只有NX enabled，说明显然不能写shellcode来做。 2 - 康康洞在哪里 想知道洞在哪，为">
+  <meta name="description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ciscn_2019_c_1 pwn题记录">
 <meta property="og:url" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/index.html">
 <meta property="og:site_name" content="HaveYouTall">
-<meta property="og:description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。 0x01 程序分析1 - checksec当然第一步还是雷打不动的先checksec一下，养成良好的习惯。 发现这个题只有NX enabled，说明显然不能写shellcode来做。 2 - 康康洞在哪里 想知道洞在哪，为">
+<meta property="og:description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/image-20210901141859134.png">
 <meta property="og:image" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/image-20210901145811696.png">
 <meta property="article:published_time" content="2021-09-01T06:05:22.598Z">
-<meta property="article:modified_time" content="2021-09-01T07:12:12.077Z">
+<meta property="article:modified_time" content="2021-09-01T07:20:36.043Z">
 <meta property="article:author" content="HaveYouTall">
 <meta property="article:tag" content="ctf-pwn">
 <meta property="article:tag" content="stack">
@@ -267,6 +267,8 @@
           
         <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。</p>
 <p>这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。</p>
+<span id="more"></span>
+
 <h2 id="0x01-程序分析"><a href="#0x01-程序分析" class="headerlink" title="0x01 程序分析"></a>0x01 程序分析</h2><h3 id="1-checksec"><a href="#1-checksec" class="headerlink" title="1 - checksec"></a>1 - checksec</h3><p>当然第一步还是雷打不动的先checksec一下，养成良好的习惯。</p>
 <p>发现这个题只有NX enabled，说明显然不能写shellcode来做。</p>
 <h3 id="2-康康洞在哪里"><a href="#2-康康洞在哪里" class="headerlink" title="2 - 康康洞在哪里"></a>2 - 康康洞在哪里</h3><p> <del>想知道洞在哪，为什么不问问神奇的F5呢</del> 扔进IDA里面然后康康神奇的F5能给我们什么帮助。</p>
@@ -349,7 +351,7 @@
         <p><span>本文标题:</span><a href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a></p>
         <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
         <p><span>发布时间:</span>2021年09月01日 - 14时05分</p>
-        <p><span>最后更新:</span>2021年09月01日 - 15时12分</p>
+        <p><span>最后更新:</span>2021年09月01日 - 15时20分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2021/09/01/ciscn_2019_c_1-wp/" title="ciscn_2019_c_1 pwn题记录">https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/</a>
             <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
