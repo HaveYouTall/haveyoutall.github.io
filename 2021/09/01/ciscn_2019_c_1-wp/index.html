@@ -3,18 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>HaveYouTall</title>
+  <title>ciscn_2019_c_1 pwn题记录 | HaveYouTall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Binary | Blockchain | Crypto">
-<meta property="og:type" content="website">
-<meta property="og:title" content="HaveYouTall">
-<meta property="og:url" content="https://haveyoutall.github.io/index.html">
+  <meta name="description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。 0x01 程序分析1 - checksec当然第一步还是雷打不动的先checksec一下，养成良好的习惯。 发现这个题只有NX enabled，说明显然不能写shellcode来做。 2 - 康康洞在哪里 想知道洞在哪，为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ciscn_2019_c_1 pwn题记录">
+<meta property="og:url" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/index.html">
 <meta property="og:site_name" content="HaveYouTall">
-<meta property="og:description" content="Binary | Blockchain | Crypto">
+<meta property="og:description" content="0x00 前情提要这道题做着挺好玩的，对于我这个菜鸟来说，可以锻炼很多方面的能力。 这道题是一个ROP类型的题目，但是也没有这么轻易给你ROP。需要分析，并且巧妙的做一些事情。 0x01 程序分析1 - checksec当然第一步还是雷打不动的先checksec一下，养成良好的习惯。 发现这个题只有NX enabled，说明显然不能写shellcode来做。 2 - 康康洞在哪里 想知道洞在哪，为">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/image-20210901141859134.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/image-20210901145811696.png">
+<meta property="article:published_time" content="2021-09-01T06:05:22.598Z">
+<meta property="article:modified_time" content="2021-09-01T07:12:12.077Z">
 <meta property="article:author" content="HaveYouTall">
-<meta property="article:tag" content="Binary | Blockchain | Crypto">
+<meta property="article:tag" content="ctf-pwn">
+<meta property="article:tag" content="stack">
+<meta property="article:tag" content="ROP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/image-20210901141859134.png">
   
     <link rel="alternative" href="/atom.xml" title="HaveYouTall" type="application/atom+xml">
   
@@ -32,9 +39,6 @@
   <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
-    
-    
-  
   
       <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
   
@@ -46,8 +50,8 @@
           rootUrl: '/',
           fancybox: true,
           animate: true,
-          isHome: true,
-          isPost: false,
+          isHome: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -219,9 +223,7 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-ciscn_2019_c_1-wp" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ciscn_2019_c_1-wp" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2021/09/01/ciscn_2019_c_1-wp/" class="article-date">
@@ -237,12 +239,27 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a>
+    <h1 class="article-title" itemprop="name">
+      ciscn_2019_c_1 pwn题记录
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ctf/">ctf</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROP/" rel="tag">ROP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -325,374 +342,144 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/ctf/">ctf</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROP/" rel="tag">ROP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-login-wp" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/30/login-wp/" class="article-date">
-      <time datetime="2021-08-30T13:56:48.456Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>这道题来自我的室友分享，我做完之后感觉挺有意思，分析的过程对于我这个新手菜鸟来说，很有学习意义，因此写个文档记录一下。</p>
-<p>这个题是一个ret2text的题，其实不是很难，但是分析的过程对于菜鸟来说还是有点曲折。</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/ctf/">ctf</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ret2text/" rel="tag">ret2text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2021/08/30/login-wp/#more">让我康康 >></a>
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a></p>
+        <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
+        <p><span>发布时间:</span>2021年09月01日 - 14时05分</p>
+        <p><span>最后更新:</span>2021年09月01日 - 15时12分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2021/09/01/ciscn_2019_c_1-wp/" title="ciscn_2019_c_1 pwn题记录">https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/09/01/ciscn_2019_c_1-wp/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu16-pwntools" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/11/ubuntu16-pwntools/" class="article-date">
-      <time datetime="2021-08-11T15:54:28.000Z" itemprop="datePublished">2021-08-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="非常需要注意！！！！！！！"><a href="#非常需要注意！！！！！！！" class="headerlink" title="非常需要注意！！！！！！！"></a>非常需要注意！！！！！！！</h2><p>在ubuntu 16里面，一定不要删除自带的python3.5，不然你的桌面左边那栏会出问题的。</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/ctf/">ctf</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu16/" rel="tag">Ubuntu16</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-tools/" rel="tag">ctf-tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2021/08/11/ubuntu16-pwntools/#more">让我康康 >></a>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
         </p>
-      
-      <div class="clearfix"></div>
     </div>
-    
-  </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/08/30/login-wp/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Login-未知出处的CTF入门题</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E5%89%8D%E6%83%85%E6%8F%90%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">0x00 前情提要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">0x01 程序分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-checksec"><span class="toc-number">2.1.</span> <span class="toc-text">1 - checksec</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BA%B7%E5%BA%B7%E6%B4%9E%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">2.2.</span> <span class="toc-text">2 - 康康洞在哪里</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-leak-libc-%E7%9A%84%E5%9F%BA%E5%9D%80"><span class="toc-number">3.</span> <span class="toc-text">0x02 leak libc 的基址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E5%8A%A0%E5%AF%86%E7%9A%84%E5%9C%B0%E6%96%B9%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-number">4.</span> <span class="toc-text">0x03 加密的地方怎么办</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%86%8D%E6%9D%A5%E4%B8%80%E6%AC%A1%E6%A0%88%E6%BA%A2%E5%87%BA"><span class="toc-number">5.</span> <span class="toc-text">0x04 再来一次栈溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-exp%E9%95%BF%E8%BF%99%E6%A0%B7"><span class="toc-number">6.</span> <span class="toc-text">0x05 exp长这样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-%E5%85%B6%E5%AE%9E%E8%BF%98%E6%9C%89%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">0x06 其实还有小问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-%E5%B0%8F%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">0x07 小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x-%E6%9C%80%E5%90%8E%E4%B8%80%E6%AE%B5%E7%94%A8%E4%BA%8E%E6%9F%A5%E6%89%BEmd%E6%BA%90%E6%96%87%E4%BB%B6%E4%BB%A5%E4%BE%BF%E4%BF%AE%E6%94%B9"><span class="toc-number">9.</span> <span class="toc-text">0x?? 最后一段用于查找md源文件以便修改</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
 
 
 
 
 
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
 
 
-  
-    <article id="post-ubuntu16-ruby" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/11/ubuntu16-ruby/" class="article-date">
-      <time datetime="2021-08-11T15:54:14.000Z" itemprop="datePublished">2021-08-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
+
     
-      <input type="hidden" class="isFancy" />
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'luuman',
+      repo: 'luuman.github.io',
+      oauth: {
+        client_id: '',
+        client_secret: '',
+      },
+    })
+    gitment.render('gitments')
+</script>
     
-    
-      <header class="article-header">
+
+
+
+    <div class="scroll" id="post-nav-button">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><blockquote>
-<p>我的环境是 ubuntu 16.04 虚拟机</p>
-</blockquote>
-<p>首先为什么要装ruby呢？</p>
-<p>就是因为要用ruby中的gem来装one_gadget</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/ctf/">ctf</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu16/" rel="tag">Ubuntu16</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-tools/" rel="tag">ctf-tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/one-gadget/" rel="tag">one_gadget</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2021/08/11/ubuntu16-ruby/#more">让我康康 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-复旦白泽暑期课程-heap-题-第一题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/" class="article-date">
-      <time datetime="2021-08-11T14:17:52.603Z" itemprop="datePublished">2021-08-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="前情分析"><a href="#前情分析" class="headerlink" title="前情分析"></a>前情分析</h2><p>拿到这个题，显然是个标准的菜单题。</p>
-<p>那么我们需要看看各个功能里面，具体的操作是什么样的。</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/ctf/">ctf</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heap/" rel="tag">heap</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/#more">让我康康 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/30/hello-world/" class="article-date">
-      <time datetime="2021-07-30T03:05:11.889Z" itemprop="datePublished">2021-07-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="spfk-主题配置相关问题"><a href="#spfk-主题配置相关问题" class="headerlink" title="spfk-主题配置相关问题"></a>spfk-主题配置相关问题</h2><p>每个文章最后的copyright显示</p>
-          
-      
-      
+            <a href="/2021/08/30/login-wp/" title="下一篇: Login-未知出处的CTF入门题">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/hexo/">hexo</a>
-    </div>
-
-
-      
-      
-        <p class="article-more-link">
-          <a  href="/2021/07/30/hello-world/#more">让我康康 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 
-
-
-
-
-
-  
-  
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
