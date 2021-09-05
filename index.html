@@ -147,7 +147,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/ROP/" style="font-size: 10px;">ROP</a> <a href="/tags/Ubuntu16/" style="font-size: 15px;">Ubuntu16</a> <a href="/tags/ctf-pwn/" style="font-size: 20px;">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 15px;">ctf-tools</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/one-gadget/" style="font-size: 10px;">one_gadget</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/ret2text/" style="font-size: 10px;">ret2text</a> <a href="/tags/stack/" style="font-size: 15px;">stack</a>
+                        <a href="/tags/ROP/" style="font-size: 10px;">ROP</a> <a href="/tags/Ubuntu16/" style="font-size: 13.33px;">Ubuntu16</a> <a href="/tags/ctf-pwn/" style="font-size: 20px;">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 13.33px;">ctf-tools</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/one-gadget/" style="font-size: 10px;">one_gadget</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/ret2text/" style="font-size: 10px;">ret2text</a> <a href="/tags/stack/" style="font-size: 16.67px;">stack</a>
                     </div>
                 </section>
                 
@@ -220,6 +220,76 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-ciscn_2019_ne_5-wp" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/ciscn_2019_ne_5-wp/" class="article-date">
+      <time datetime="2021-09-05T13:59:36.722Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/05/ciscn_2019_ne_5-wp/">ciscn_2019_ne_5的wp，走了歪路的一个栈溢出（错的地方还是不知道为啥）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>这个题，我做的时候走了很多弯路，我觉得弯路的逻辑也是没问题的，但是就是会crash掉，很奇怪，还是不知道这个弯路为啥错了。</p>
+<p>正确的解法，让我这个菜鸟又大开了眼界，从此我也知道了原来**system(“sh”)**，也能拿到shell。</p>
+<p>还有就是，我也学会了如何使用ROPgadget去搜索字符串了🐶。（菜鸟嘛，理解一下，之前一直都是ida里找的）</p>
+<p>这个题主要记录一下我的弯路思维，以及正确解法，所以不会又太详细的分析了。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ctf/">ctf</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2021/09/05/ciscn_2019_ne_5-wp/#more">让我康康 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-ciscn_2019_c_1-wp" class="article article-type-post" itemscope itemprop="blogPost">
   
