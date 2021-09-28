@@ -3,19 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>tags | HaveYouTall</title>
+  <title>main函数参数传递的几点记录 | HaveYouTall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Binary | Blockchain | Crypto">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://haveyoutall.github.io/tags/index.html">
+  <meta name="description" content="0x00 前情提要有的时候，需要向main函数传递参数。 那么传递在pwn题中都有哪些需要知道的点呢？ 菜鸟小Tall怕自己忘记了，所以写个文档稍微记录一下康康~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="main函数参数传递的几点记录">
+<meta property="og:url" content="https://haveyoutall.github.io/2021/09/28/gdb-parameters-for-main/index.html">
 <meta property="og:site_name" content="HaveYouTall">
-<meta property="og:description" content="Binary | Blockchain | Crypto">
+<meta property="og:description" content="0x00 前情提要有的时候，需要向main函数传递参数。 那么传递在pwn题中都有哪些需要知道的点呢？ 菜鸟小Tall怕自己忘记了，所以写个文档稍微记录一下康康~">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-08-11T13:57:34.000Z">
-<meta property="article:modified_time" content="2021-08-11T13:59:24.403Z">
+<meta property="article:published_time" content="2021-09-28T02:37:32.432Z">
+<meta property="article:modified_time" content="2021-09-28T04:07:03.504Z">
 <meta property="article:author" content="HaveYouTall">
-<meta property="article:tag" content="Binary | Blockchain | Crypto">
+<meta property="article:tag" content="ctf-pwn">
+<meta property="article:tag" content="ctf-tools">
+<meta property="article:tag" content="gdb">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="HaveYouTall" type="application/atom+xml">
@@ -46,7 +48,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -218,11 +220,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-gdb-parameters-for-main" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/tags/index.html" class="article-date">
-      <time datetime="2021-08-11T13:57:34.000Z" itemprop="datePublished">2021-08-11</time>
+      <a href="/2021/09/28/gdb-parameters-for-main/" class="article-date">
+      <time datetime="2021-09-28T02:37:32.432Z" itemprop="datePublished">2021-09-28</time>
 </a>
     </div>
   
@@ -235,7 +237,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      tags
+      main函数参数传递的几点记录
     </h1>
   
 
@@ -243,8 +245,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ctf/">ctf</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-tools/" rel="tag">ctf-tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -252,110 +262,34 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
+        <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>有的时候，需要向main函数传递参数。</p>
+<p>那么传递在pwn题中都有哪些需要知道的点呢？</p>
+<p>菜鸟小Tall怕自己忘记了，所以写个文档稍微记录一下康康~</p>
+<span id="more"></span>
 
+<h2 id="0x01-pwntools里的传递"><a href="#0x01-pwntools里的传递" class="headerlink" title="0x01 pwntools里的传递"></a>0x01 pwntools里的传递</h2><p>pwntools向main函数传递参数很简单，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r = process(argv=[<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>]) <span class="comment"># 调用 ls -al 指令</span></span><br><span class="line">payload = ...</span><br><span class="line">payload2 = ...</span><br><span class="line">r = process(argv=[<span class="string">&quot;./name&quot;</span>,payload,payload2]) <span class="comment">#调用name程序，并传入参数payload 和payload2，其中payload和payload2必须是字符串类型。</span></span><br></pre></td></tr></table></figure>
 
-    <!-- Tag Cloud Page -->
-    <hr>
-    <br>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/S-U-s-lessons/">S..U's lessons</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ctf/">ctf</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li></ul>
+<h2 id="0x02-gdb中传入参数"><a href="#0x02-gdb中传入参数" class="headerlink" title="0x02 gdb中传入参数"></a>0x02 gdb中传入参数</h2><p>有的时候，在调试过程中可能会遇到在gdb中传个参数康康情况的可能性。</p>
+<p>因此也稍微掌握一下这个技能也不错哈哈哈哈。</p>
+<p>下面的操作都是在 <code>gdb ./name</code> 的情况下。（name是程序的名字）</p>
+<p><strong>直接传入参数</strong></p>
+<p>一个办法是直接传，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; <span class="built_in">set</span> args abc 123 <span class="comment"># 这样的操作就是使得传入两个参数，分别是abc和123（注意这样传的都是字符串）</span></span><br><span class="line">pwndbg&gt; r <span class="comment"># 运行程序</span></span><br></pre></td></tr></table></figure>
 
-    <p class="count"></p>
+<p><strong>从文件中传入参数</strong></p>
+<p>有的时候，传入的参数可能是不可见字符，这个时候没法手动输入，只能先把内容写道文件里，然后读取文件内容作为参数传入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; r $(&lt;params.txt) <span class="comment"># 讲params.txt文件的内容作为参数传入</span></span><br></pre></td></tr></table></figure>
 
-    <div class="tags">
-        <a href="/tags/ROP/" style="font-size: 16px; color: #808080">ROP</a> <a href="/tags/Ubuntu16/" style="font-size: 22.33px; color: #555">Ubuntu16</a> <a href="/tags/Ubuntu18/" style="font-size: 16px; color: #808080">Ubuntu18</a> <a href="/tags/ctf-pwn/" style="font-size: 35px; color: #000">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 28.67px; color: #2b2b2b">ctf-tools</a> <a href="/tags/gdb/" style="font-size: 16px; color: #808080">gdb</a> <a href="/tags/gnuradio/" style="font-size: 16px; color: #808080">gnuradio</a> <a href="/tags/heap/" style="font-size: 16px; color: #808080">heap</a> <a href="/tags/one-gadget/" style="font-size: 16px; color: #808080">one_gadget</a> <a href="/tags/pip/" style="font-size: 16px; color: #808080">pip</a> <a href="/tags/python/" style="font-size: 16px; color: #808080">python</a> <a href="/tags/ret2text/" style="font-size: 16px; color: #808080">ret2text</a> <a href="/tags/stack/" style="font-size: 28.67px; color: #2b2b2b">stack</a> <a href="/tags/wireless-security/" style="font-size: 16px; color: #808080">wireless security</a>
-    </div>
-    <style>
-        .category-list li{
-            display: inline-block;
-            margin: 0 1em .5em 0;
-            padding: 4px;
-            border: 1px solid lightgray;
-            font-size: 1.2em;
-        }
-        .category-list a {
-            color: gray;
-        }
-        .category-list-item:hover a {
-            color: gray;
-            text-decoration: none;
-        }
-        .category-list-count {
-            margin-left: 2px;
-            font-size: .9em;
-        }
-        .article-entry ul li:before{
-            display: none;
-        }
-        .article-inner  {
-            text-align: center;
-        }
-        .tags {
-            max-width: 40em;
-            margin: 2em auto;
-            margin-top: 0em;
-        }
-        .tags a {
-            margin-right: 1em;
-            line-height: 65px;
-            border-bottom: 1px solid gray;
-            white-space: nowrap;
-        }
-        .tags a:hover {
-            border-bottom: 2px solid black;
-            text-decoration: none;
-            font-style: italic;
-        }
-        #count > span {
-            margin: auto .2em;
-            font-weight: bold;
-        }
-    </style>
+<h2 id="0x03-shell中直接运行程序时传入参数"><a href="#0x03-shell中直接运行程序时传入参数" class="headerlink" title="0x03 shell中直接运行程序时传入参数"></a>0x03 shell中直接运行程序时传入参数</h2><p>这个相必很简单，就是正常调用，后面跟参数就行，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./name abc 123 <span class="comment"># 这样的操作就是使得传入两个参数，分别是abc和123</span></span></span><br></pre></td></tr></table></figure>
 
-    <!-- Count tags and categories -->
-    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
-    <p id="count">
-            已有<span><script>document.write($(".category-list-item").length)</script></span>个分类，
-            共计<span><script>document.write($(".tags > a").length)</script></span>个标签。
-    </p>
-    <script>
-        $('#count').appendTo('.count');
-    </script>
+<p>当然，这个时候也有可能会遇到不可见字符，那就只能通过文件传入了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./name $(&lt;params.txt)</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="0x04-通过文件传入参数怎么判断参数的个数"><a href="#0x04-通过文件传入参数怎么判断参数的个数" class="headerlink" title="0x04 通过文件传入参数怎么判断参数的个数"></a>0x04 通过文件传入参数怎么判断参数的个数</h2><p>这个需要单独拿出来讲讲，因为通过文件传入参数的时候，需要注意参数的个数怎么判断。</p>
+<p>即，一行字符串是一个参数。（以换行为准）</p>
 
-          
-        
       
       
     </div>
@@ -363,10 +297,69 @@
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2021/09/28/gdb-parameters-for-main/">main函数参数传递的几点记录</a></p>
+        <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
+        <p><span>发布时间:</span>2021年09月28日 - 10时37分</p>
+        <p><span>最后更新:</span>2021年09月28日 - 12时07分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2021/09/28/gdb-parameters-for-main/" title="main函数参数传递的几点记录">https://haveyoutall.github.io/2021/09/28/gdb-parameters-for-main/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/09/28/gdb-parameters-for-main/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/23/gnuradio/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ubuntu 18.04 gnuradio安装踩坑</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E5%89%8D%E6%83%85%E6%8F%90%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">0x00 前情提要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-pwntools%E9%87%8C%E7%9A%84%E4%BC%A0%E9%80%92"><span class="toc-number">2.</span> <span class="toc-text">0x01 pwntools里的传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-gdb%E4%B8%AD%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">0x02 gdb中传入参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-shell%E4%B8%AD%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%97%B6%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">0x03 shell中直接运行程序时传入参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E5%8F%82%E6%95%B0%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">0x04 通过文件传入参数怎么判断参数的个数</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
 
 
 
@@ -402,6 +395,37 @@
     
 
 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2021/09/23/gnuradio/" title="下一篇: Ubuntu 18.04 gnuradio安装踩坑">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/09/28/gdb-parameters-for-main/">main函数参数传递的几点记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/23/gnuradio/">Ubuntu 18.04 gnuradio安装踩坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/05/ciscn_2019_ne_5-wp/">ciscn_2019_ne_5的wp，走了歪路的一个栈溢出（错的地方还是不知道为啥）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 
