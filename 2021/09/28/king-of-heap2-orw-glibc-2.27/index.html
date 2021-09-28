@@ -12,17 +12,17 @@
 <meta property="og:site_name" content="HaveYouTall">
 <meta property="og:description" content="0x00 前情提要这道题我还是做了比较久的，因为一直没有一个连续有空的时间可以将其搞定。所以拖了好久才做完这个题。题目来自第一界长城杯pwn的第二题。 从这个题中我学到了什么呢？  首先就是对堆上的一些概念更加清晰了，感觉glibc-2.27算是入门了。 然后就是学会了如何在堆上做orw（资料显示，2.29及其之前都可以通过setcontext来做栈迁移，然后ROP） 最后就是如何用ROPgadg">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
-<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/image-20210928165154363.png">
+<meta property="og:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/image-20210928165154363.png">
 <meta property="article:published_time" content="2021-09-28T07:35:33.193Z">
-<meta property="article:modified_time" content="2021-09-28T11:06:52.737Z">
+<meta property="article:modified_time" content="2021-09-28T11:16:12.886Z">
 <meta property="article:author" content="HaveYouTall">
 <meta property="article:tag" content="ctf-pwn">
 <meta property="article:tag" content="heap">
 <meta property="article:tag" content="glibc-2.27">
 <meta property="article:tag" content="orw">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png">
+<meta name="twitter:image" content="https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/image-20210928165154363.png">
   
     <link rel="alternative" href="/atom.xml" title="HaveYouTall" type="application/atom+xml">
   
@@ -296,7 +296,7 @@
 <p>如果我们可以将其改成后一个堆块+0x10的地址，我们再malloc出来的那个堆块就相当于囊括了其下一个堆块的size位。</p>
 <p>例如，有如下堆块布局，先free 2再free1，则tcache里面内容为 tcache-&gt;1-&gt;2。</p>
 <p>这个时候修改堆块1的fd的值为0x555640，然后再往堆块2里面写0x60的内容，这样最后0x10的内容就是堆块3的size位了，也就是0x5556a0开始的0x10个字节。</p>
-<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png" alt="image-20210928165154363"></p>
+<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/image-20210928165154363.png" alt="image-20210928165154363"></p>
 <blockquote>
 <p>Note: <strong>由于2.27里面有tcache，所以其实修改fd很简单，不需要往修改后地址里面伪造size，因为这个只有再fastbin里面才有检查分配出来的堆块地址的size位。</strong></p>
 </blockquote>
@@ -345,7 +345,7 @@
 <p>2、然后要注意的是，ROP链的大小大于0x60，所以不能在一个chunk中写完，但刚好可以在两个堆块中写完。所以这里我们需要做两个堆块的连接。也就是把第二个堆块分配的位置往低地址-0x10。</p>
 <p>例如（如下图）：在tcache中，其结构为tcache-&gt;1-&gt;2，则修改1的fd为0x555620，这样分配出来可用的字段就是0x555630开始，这样之后，往chunk1中写0x60个字节刚好写到了0x555630这里，chunk2又可以从这个地方接着往后写0x60个字节，这样就使得chunk1的内容和chunk2的内容连起来了。</p>
 <p>并且这样操作之后也会让top chunk识别出错，即不能再从top chunk中分配出堆块了，但不会影响到tcache的使用。</p>
-<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/king-of-heap2-orw-glibc-2.27%5Cimage-20210928165154363.png" alt="image-20210928165154363"></p>
+<p><img src="/2021/09/28/king-of-heap2-orw-glibc-2.27/image-20210928165154363.png" alt="image-20210928165154363"></p>
 <p>3、这个题堆块一开始有很多零碎的分配，都在tcache中，因此需要先搞一个循环把这些堆块都分配出来，这样才能使得后面分配的堆块是从top chunk中分配出来的，且为连续的。</p>
 <p>4、直接<code>ROPgadget --binary ./libc.so</code> 是没法找到<code>syscall ; ret</code>的。必须要使用<code>ROPgadget --binary ./libc.so --multibr</code> 才行。</p>
 <h2 id="0x-最后一段用于查找md源文件以便修改"><a href="#0x-最后一段用于查找md源文件以便修改" class="headerlink" title="0x?? 最后一段用于查找md源文件以便修改"></a>0x?? 最后一段用于查找md源文件以便修改</h2><blockquote>
@@ -363,7 +363,7 @@
         <p><span>本文标题:</span><a href="/2021/09/28/king-of-heap2-orw-glibc-2.27/">长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw</a></p>
         <p><span>文章作者:</span><a href="/" title="请访问 HaveYouTall 的个人博客">HaveYouTall</a></p>
         <p><span>发布时间:</span>2021年09月28日 - 15时35分</p>
-        <p><span>最后更新:</span>2021年09月28日 - 19时06分</p>
+        <p><span>最后更新:</span>2021年09月28日 - 19时16分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2021/09/28/king-of-heap2-orw-glibc-2.27/" title="长城杯pwn-king-of-heapII-writeup---记录第一次heap上的orw">https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/</a>
             <span class="copy-path" data-clipboard-text="原文: https://haveyoutall.github.io/2021/09/28/king-of-heap2-orw-glibc-2.27/　　作者: HaveYouTall" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
