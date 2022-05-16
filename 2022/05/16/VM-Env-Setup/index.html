@@ -265,9 +265,7 @@
 <h3 id="命令补全插件"><a href="#命令补全插件" class="headerlink" title="命令补全插件"></a>命令补全插件</h3><p>autosuggestions</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions.git <span class="variable">$ZSH_CUSTOM</span>/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>直接将这个插件添加到<code>.zshrc</code>的plugins字段里（但是有bug）</li>
-</ol>
+<p>直接将这个插件添加到<code>.zshrc</code>的plugins字段里（但是暂时有点bug）</p>
 <p>然后在<code>.zshrc</code>文件里面增加plugins <code>plugins=(... zsh-autosuggestions)</code></p>
 <p>结果居然遇到了<a target="_blank" rel="noopener" href="https://github.com/zsh-users/zsh-autosuggestions/issues/574">这个问题</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/haveyoutall/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh:<span class="built_in">source</span>:1: no such file or directory: /home/haveyoutall/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh^M</span><br></pre></td></tr></table></figure>
