@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="HaveYouTall">
+
+
+
+    <meta name="description" content="Binary | Blockchain | Crypto">
+
+
+    <meta name="keywords" content="Binary | Blockchain | Crypto">
+
+
+<title>虚拟机从头配置简单的环境 | HaveYouTall</title>
+
+
+
+    <link rel="icon" href="/favicon.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">HaveYouTall&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag/">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">HaveYouTall&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag/">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6;    // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function () {
+            tocbot.refresh(obj_merge(tocbot_default_config, { hasInnerContainers: true }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function () {
+        tocbot.init(obj_merge(tocbot_default_config, { collapseDepth: 1 }));
+    });
+
+    function expandToc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, { collapseDepth: expanded ? 1 : DEPTH_MAX }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">虚拟机从头配置简单的环境</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">HaveYouTall</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 16, 2022&nbsp;&nbsp;21:49:46</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/EnvSetup/">EnvSetup</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="0x00-前情提要"><a href="#0x00-前情提要" class="headerlink" title="0x00 前情提要"></a>0x00 前情提要</h2><p>本文各种配置提取自很多博客以及自己踩过的很多坑，是一个环境配置的简易版总结。</p>
+<p>为了方便重头安装虚拟机的时候，可以较快的配置上需要的环境。</p>
+<h2 id="0x01-Python环境及pip"><a href="#0x01-Python环境及pip" class="headerlink" title="0x01 Python环境及pip"></a>0x01 Python环境及pip</h2><p>python环境安装可以参考文档博客文章 —— <a href="https://haveyoutall.github.io/2021/08/11/ubuntu16-pwntools/">ubuntu16-pwntools-安装问题</a>。 安装方法类似，类比到python各个版本即可。</p>
+<p>按照个人习惯，比较喜欢把默认<code>python</code>配置成<code>python3</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+<p>下面简单写一写ubuntu20.04下的最新pip环境安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip2.7.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 没有3.8的get-pip.py</span></span><br><span class="line"><span class="comment"># 但是python3.8的pip 在ubuntu20.04下，好像直接apt-get就行</span></span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line"></span><br><span class="line"><span class="comment"># 装python2.7的pip</span></span><br><span class="line">sudo python2 get-pip2.7.py -i  https://mirrors.aliyun.com/pypi/simple/</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x02-root用户"><a href="#0x02-root用户" class="headerlink" title="0x02 root用户"></a>0x02 root用户</h2><p><code>sudo passwd root</code> 给root用户设置密码，这样就可以用这个密码以root登录了。</p>
+<h2 id="0x03-oh-my-zsh"><a href="#0x03-oh-my-zsh" class="headerlink" title="0x03 oh-my-zsh"></a>0x03 oh-my-zsh</h2><p><a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh">oh-my-zsh github</a></p>
+<h3 id="首先是安装zsh"><a href="#首先是安装zsh" class="headerlink" title="首先是安装zsh"></a>首先是安装zsh</h3><p><a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH">zsh安装教程</a></p>
+<ol>
+<li><p>先装个zsh <code>sudo apt install zsh</code>。</p>
+</li>
+<li><p>需要确认zsh的版本满足<code>v4.3.9 or more recent is fine but we prefer 5.0.8 and newer</code>。</p>
+<p> 使用<code>zsh --version</code>来确认zsh的版本。</p>
+</li>
+<li><p>将zsh设置为默认的shell (使用chsh来改变默认的shell)</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">chsh -s `<span class="built_in">which</span> zsh`</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意<code>chsh</code>是切换当前用户的默认shell，加上sudo的话当前用户就是root了，这样重新登录非root用户shell还是没有被改变的。</p>
+<p>当然也可以使用<code>chsh</code>指定修改某个用户的shell，例如<code>chsh -s /bin/zsh haveyoutall</code>，指定修改haveyoutall的默认shell。</p>
+</blockquote>
+</li>
+<li><p> 然后重启一下电脑</p>
+</li>
+<li><p> 重启后看看<code>echo $SHELL</code>，可以看当前的shell是什么。</p>
+</li>
+<li><p> 还可以用<code>$SHELL --version</code>查看当前shell的版本。</p>
+</li>
+</ol>
+<h3 id="然后是安装oh-my-zsh"><a href="#然后是安装oh-my-zsh" class="headerlink" title="然后是安装oh-my-zsh"></a>然后是安装oh-my-zsh</h3><p>使用curl来获取安装shell脚本，然后sh执行。</p>
+<p><code>sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</code></p>
+<p>然后就会显示出很明显的成功安装的提示，具体有多明显可以自己去试试（🐶</p>
+<p>也可以用其他的，参考官方github即可。</p>
+<h3 id="设置oh-my-zsh插件"><a href="#设置oh-my-zsh插件" class="headerlink" title="设置oh-my-zsh插件"></a>设置oh-my-zsh插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+<p>添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">plugins=(</span><br><span class="line">  git</span><br><span class="line">  bundler</span><br><span class="line">  dotenv</span><br><span class="line">  macos</span><br><span class="line">  rake</span><br><span class="line">  rbenv</span><br><span class="line">  ruby</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置主题"><a href="#设置主题" class="headerlink" title="设置主题"></a>设置主题</h3><p>参考github官网找自己喜欢的主题就好。</p>
+<h3 id="命令补全插件"><a href="#命令补全插件" class="headerlink" title="命令补全插件"></a>命令补全插件</h3><p>autosuggestions</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions.git <span class="variable">$ZSH_CUSTOM</span>/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>直接将这个插件添加到<code>.zshrc</code>的plugins字段里（但是有bug）</li>
+</ol>
+<p>然后在<code>.zshrc</code>文件里面增加plugins <code>plugins=(... zsh-autosuggestions)</code></p>
+<p>结果居然遇到了<a target="_blank" rel="noopener" href="https://github.com/zsh-users/zsh-autosuggestions/issues/574">这个问题</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/haveyoutall/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh:<span class="built_in">source</span>:1: no such file or directory: /home/haveyoutall/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh^M</span><br></pre></td></tr></table></figure>
+
+<p>问题的原因是<code>I had this same issue in WSL2, it was due to CLRF line endings on the files. Once I switched them to LF it worked fine.</code>。也就是说，我是在windows下git的，然后转到linux里面，导致了git来的格式是CLRF，与Linux里面的LF不同，所以才会出错。</p>
+<blockquote>
+<p>之所以之前用windows 来git是因为linux下git总是失败。</p>
+</blockquote>
+<p>因此，我重新Linux下git了一份，重新做前面的操作就成功了。</p>
+<h2 id="0x04-curl"><a href="#0x04-curl" class="headerlink" title="0x04 curl"></a>0x04 curl</h2><p><code>sudo apt-get install curl</code></p>
+<h2 id="0x05-wget"><a href="#0x05-wget" class="headerlink" title="0x05 wget"></a>0x05 wget</h2><p><del><code>sudo apt-get install wget</code></del></p>
+<p>Ubuntu20.04 默认是有 wget 的，没有的话就再apt-get安装一下吧。</p>
+<h2 id="0x06-git"><a href="#0x06-git" class="headerlink" title="0x06 git"></a>0x06 git</h2><p><code>sudo apt-get install git</code></p>
+<h2 id="0x07-openssl-想装再装吧，感觉暂时用不到"><a href="#0x07-openssl-想装再装吧，感觉暂时用不到" class="headerlink" title="0x07 openssl 想装再装吧，感觉暂时用不到"></a><del>0x07 openssl</del> <del>想装再装吧，感觉暂时用不到</del></h2><h2 id="0x07-docker"><a href="#0x07-docker" class="headerlink" title="0x07 docker"></a>0x07 docker</h2><p>搬运自 <a target="_blank" rel="noopener" href="https://kalacloud.com/blog/how-to-install-and-use-docker-on-ubuntu/">https://kalacloud.com/blog/how-to-install-and-use-docker-on-ubuntu/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新软件包.</span></span><br><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装一些必备软件包.</span></span><br><span class="line">sudo apt install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将官方 Docker 版本库的 GPG 密钥</span></span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"><span class="comment"># 执行后应该要输出 OK</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 Docker 版本库添加到APT源</span></span><br><span class="line">sudo add-apt-repository <span class="string">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新一下</span></span><br><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保要从 Docker 版本库，而不是默认的 Ubuntu 版本库进行安装</span></span><br><span class="line">apt-cache policy docker-ce</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装docker</span></span><br><span class="line">sudo apt install docker-ce</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查docker是否正常运行</span></span><br><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x08-pwn-related"><a href="#0x08-pwn-related" class="headerlink" title="0x08 pwn related"></a>0x08 pwn related</h2><p>这个部分的安装需要的前提是，按照前面的步骤配置好了python的环境。</p>
+<h3 id="1-pwntools"><a href="#1-pwntools" class="headerlink" title="1) pwntools"></a>1) pwntools</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo python2 -m pip install pwntools</span><br><span class="line">sudo python3 -m pip install pwntools</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-ROPgadget"><a href="#2-ROPgadget" class="headerlink" title="2) ROPgadget"></a>2) ROPgadget</h3><ul>
+<li><p>如果装了python2 下的 pwntools的话，会自带安装好了ROPgadget。</p>
+</li>
+<li><p>如果装了python3 的 pwntools的话，也会自带ROPgadget。</p>
+</li>
+<li><p>如果需要手动安装则流程如下：</p>
+<ul>
+<li>先安装Capstone,它是一个轻量级的多平台架构支持的反汇编架构。<br>  <code>sudo apt-get install python-capstone</code></li>
+<li>然后下载好ROPgadget解压或者git下来<br>  <code>git clone https://github.com/JonathanSalwan/ROPgadget.git</code><br>  然后进入ROPgadget文件夹中 执行 <code>python setup.py install</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-one-gadget"><a href="#3-one-gadget" class="headerlink" title="3) one_gadget"></a>3) one_gadget</h3><p>可以参考我的博客里面的 <a href="https://haveyoutall.github.io/2021/08/11/ubuntu16-ruby/">ubuntu16安装one_gadget踩的ruby的坑</a></p>
+<p>装one_gadget需要先配有ruby。</p>
+<p>可以用rvm包管理器装ruby。</p>
+<h4 id="rvm"><a href="#rvm" class="headerlink" title="rvm"></a>rvm</h4><ol>
+<li>方法1 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先安装gpg2</span></span><br><span class="line">sudo apt install gnupg2 -y</span><br><span class="line"><span class="comment"># 然后需要获取一个密钥，应该是通过ssh访问的时候，需要认证吧，具体没有去想，因为我curl后面其实没法访问到那个网址，我是用的别的方法，这个方法也先记录一下</span></span><br><span class="line">gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br><span class="line"><span class="comment"># 这个命令试了好多都是有问题的，都是ketserver找不到，估计是墙的原因，因此我找了半天，发现这个ketserver的80端口是可以的，然后就弄下来了这个key。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后是就是拿下那个shell了</span></span><br><span class="line">curl -sSL  https://get.rvm.io | bash -s stable</span><br><span class="line"><span class="built_in">source</span> /home/haveyoutall/.rvm/scripts/rvm</span><br></pre></td></tr></table></figure></li>
+<li>方法2：去这个网站 <a target="_blank" rel="noopener" href="https://get.rvm.io,把rvm的安装脚本直接复制过来./">https://get.rvm.io，把rvm的安装脚本直接复制过来。</a> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果没有代理的话可能没法从这里curl下来。</span></span><br><span class="line"><span class="comment"># 所以干脆直接粗暴的上去复制下来存到rvm_install.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接执行</span></span><br><span class="line">cat rvm-install.sh | bash -s stable</span><br><span class="line"><span class="built_in">source</span> /home/haveyoutall/.rvm/scripts/rvm</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="安装ruby"><a href="#安装ruby" class="headerlink" title="安装ruby"></a>安装ruby</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rvm requirements <span class="comment"># 先装上需要的依赖</span></span><br><span class="line">rvm install 2.7 <span class="comment"># 写自己想要的ruby版本号就行，例如2.7 或者 2.7.0 或者 2.7.4等等</span></span><br><span class="line">rvm list <span class="comment"># 看看本机装过些啥ruby版本</span></span><br><span class="line">rvm use 2.7.2 --default <span class="comment"># 选择使用你要用的版本，并设置default</span></span><br><span class="line">ruby -v <span class="comment">#看看是不是想要的版本了</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="最后装one-gadget"><a href="#最后装one-gadget" class="headerlink" title="最后装one_gadget"></a>最后装one_gadget</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gem install one_gadget <span class="comment"># 然后干就完了</span></span><br><span class="line"><span class="comment"># 这里不需要有sudo，因为我们装的rvm是在本地的，也就是说rvm装的ruby是本地的</span></span><br><span class="line"><span class="comment"># 进而sudo下没有gem。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-gdb环境整合"><a href="#4-gdb环境整合" class="headerlink" title="4) gdb环境整合"></a>4) gdb环境整合</h3><h4 id="a-peda"><a href="#a-peda" class="headerlink" title="a) peda"></a>a) peda</h4><p><code>git clone https://github.com/longld/peda.git</code></p>
+<h4 id="b-pwndbg"><a href="#b-pwndbg" class="headerlink" title="b) pwndbg"></a>b) pwndbg</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/pwndbg/pwndbg</span><br><span class="line"><span class="built_in">cd</span> pwndbg</span><br><span class="line">./setup.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-Pwngdb"><a href="#c-Pwngdb" class="headerlink" title="c) Pwngdb"></a>c) Pwngdb</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/scwuaptx/Pwngdb.git</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> Pwngdb</span><br><span class="line">cp ./.gdbinit ~/</span><br><span class="line">vim ~/.gdbinit</span><br></pre></td></tr></table></figure>
+
+<p>然后将<code>.gdbinit</code>的内容改为如下：（因为peda和pwndbg只能2选1）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#source ~/Downloads/peda/peda.py # 注释</span></span><br><span class="line"><span class="built_in">source</span> ~/Downloads/pwndbg/gdbinit.py <span class="comment"># 添加</span></span><br><span class="line"><span class="built_in">source</span> ~/Downloads/Pwngdb/pwngdb.py <span class="comment"># 修改路径</span></span><br><span class="line"><span class="built_in">source</span> ~/Downloads/Pwngdb/angelheap/gdbinit.py <span class="comment"># 修改路径</span></span><br><span class="line"></span><br><span class="line">define hook-run</span><br><span class="line">python</span><br><span class="line">import angelheap</span><br><span class="line">angelheap.init_angelheap()</span><br><span class="line">end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="0x09-vsCode"><a href="#0x09-vsCode" class="headerlink" title="0x09 vsCode"></a>0x09 vsCode</h2><p><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">vsCode官网</a></p>
+<ol>
+<li><p>下载deb包</p>
+</li>
+<li><p>安装deb包<code>sudo dpkg -i 包名.deb</code></p>
+</li>
+</ol>
+<h2 id="0x0A-frida"><a href="#0x0A-frida" class="headerlink" title="0x0A frida"></a>0x0A frida</h2><p><a target="_blank" rel="noopener" href="https://frida.re/docs/installation/">frida官网</a></p>
+<p><code>sudo python3 -m pip install frida-tools</code></p>
+<h2 id="0x0B-net-tools"><a href="#0x0B-net-tools" class="headerlink" title="0x0B net-tools"></a>0x0B net-tools</h2><p><code>sudo apt-get install net-tools</code></p>
+<h2 id="0x-最后一段用于查找md源文件以便修改"><a href="#0x-最后一段用于查找md源文件以便修改" class="headerlink" title="0x?? 最后一段用于查找md源文件以便修改"></a>0x?? 最后一段用于查找md源文件以便修改</h2><blockquote>
+<p>//文档查找：VM-Env-Setup.md</p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>HaveYouTall</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://haveyoutall.github.io/2022/05/16/VM-Env-Setup/">https://haveyoutall.github.io/2022/05/16/VM-Env-Setup/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2022 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>If you read this, then you must have read this already. lol~~~</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/VMware/"># VMware</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/03/07/VMware-out-of-mem-fail-to-expanded/">记一次失败的虚拟机扩容</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© HaveYouTall | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
