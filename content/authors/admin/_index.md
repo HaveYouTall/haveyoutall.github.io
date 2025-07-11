@@ -54,7 +54,7 @@ interests:
 education:
   - area: Ph.D. Computer Science
     institution: School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University
-    date_start: 2025-09
+    date_start: 2025-09-01
     date_end: 
     summary: ""
     button:
@@ -62,21 +62,21 @@ education:
       url: ''
   - area: M.Eng. Cyber Security
     institution: School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University
-    date_start: 2021-09
-    date_end: 2024-03
+    date_start: 2021-09-01
+    date_end: 2024-03-31
     summary: ""
   - area: B.Sc. Information Security
     institution: Bell Honor School, Nanjing University of Posts and Telecommunications
-    date_start: 2017-09
-    date_end: 2021-06
+    date_start: 2017-09-01
+    date_end: 2021-06-30
     summary: ""
 work:
   - position: Reasearcher
     company_name: Shanghai Qi Zhi Insitute
     company_url: 'https://sqz.ac.cn'
     company_logo: ''
-    date_start: 2024-04
-    date_end: 2025-07
+    date_start: 2024-04-01
+    date_end: 2025-07-31
     summary: ""
     # |2-
     #   Responsibilities include:
