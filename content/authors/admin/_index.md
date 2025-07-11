@@ -1,6 +1,6 @@
 ---
 # Display name
-title: 何弈拓 (a.k.a )
+title: 何弈拓
 
 # Name pronunciation (optional)
 name_pronunciation: He(Ho) Yituo
