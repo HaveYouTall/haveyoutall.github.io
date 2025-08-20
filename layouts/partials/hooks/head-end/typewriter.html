@@ -52,18 +52,33 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    // 创建头像和文字容器
-    titleElement.innerHTML = `
-      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        margin-right: 8px;
-        object-fit: cover;
-        flex-shrink: 0;
-      " onerror="this.style.display='none'">
-      <span class="typewriter-text"></span>
+    // 创建头像和文字容器 - 使用专门的icon图片
+    const iconImg = document.createElement('img');
+    const textSpan = document.createElement('span');
+    
+    iconImg.alt = 'Avatar';
+    iconImg.className = 'typewriter-avatar';
+    iconImg.style.cssText = `
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
     `;
+    
+    textSpan.className = 'typewriter-text';
+    
+    // 尝试加载icon图片
+    iconImg.src = '/media/icons/icon.jpg';
+    iconImg.onerror = function() {
+      // 如果icon.jpg不存在，隐藏图片
+      this.style.display = 'none';
+    };
+    
+    titleElement.innerHTML = '';
+    titleElement.appendChild(iconImg);
+    titleElement.appendChild(textSpan);
     
     const textElement = titleElement.querySelector('.typewriter-text');
     

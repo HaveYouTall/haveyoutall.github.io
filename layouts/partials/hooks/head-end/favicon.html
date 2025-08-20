@@ -1,24 +1,32 @@
 <!-- 自定义 Favicon 配置 -->
-<!-- 将你的图标文件放在 assets/media/icons/ 目录中 -->
+<!-- 使用Hugo资源处理 + 静态文件双重保障 -->
 
-<!-- 标准 favicon -->
-<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+{{ $icon := resources.Get "media/icon.png" }}
+{{ if $icon }}
+  {{ $icon32 := $icon.Resize "32x32" }}
+  {{ $icon16 := $icon.Resize "16x16" }}
+  
+  <!-- Hugo处理的PNG图标 (主要) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ $icon32.RelPermalink }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ $icon16.RelPermalink }}">
+  <link rel="shortcut icon" href="{{ $icon32.RelPermalink }}">
+  
+{{ end }}
 
-<!-- 现代浏览器支持的 PNG 格式 -->
-<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<!-- 静态文件备用方案 -->
 <link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
 
-<!-- Apple 设备图标 -->
-<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+<!-- 传统favicon位置 -->
+<link rel="shortcut icon" href="/favicon.ico">
 
-<!-- Android 设备图标 -->
-<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+<!-- Apple设备 -->
+<link rel="apple-touch-icon" href="/media/icons/icon.jpg">
 
 <!-- 网站清单 -->
 <link rel="manifest" href="/media/icons/site.webmanifest">
 
-<!-- Windows 磁贴 -->
+<!-- Windows磁贴 -->
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-config" content="/media/icons/browserconfig.xml">
 

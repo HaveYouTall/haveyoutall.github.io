@@ -36,6 +36,8 @@ header:
     show_theme_chooser: true
     logo:
       text: "Yituo"
+      # 使用自定义图标
+      filename: "icon.png"
 
 # Site footer
 footer:

@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cryptography | Yituo He(Ho)</title>
-    <link>http://localhost:1313/tags/cryptography/</link>
-      <atom:link href="http://localhost:1313/tags/cryptography/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:50105/tags/cryptography/</link>
+      <atom:link href="http://localhost:50105/tags/cryptography/index.xml" rel="self" type="application/rss+xml" />
     <description>Cryptography</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
+      <url>http://localhost:50105/media/icon_hu2196129970520670611.png</url>
       <title>Cryptography</title>
-      <link>http://localhost:1313/tags/cryptography/</link>
+      <link>http://localhost:50105/tags/cryptography/</link>
     </image>
     
     <item>
       <title>PQMagic</title>
-      <link>http://localhost:1313/project/pqmagic/</link>
+      <link>http://localhost:50105/project/pqmagic/</link>
       <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/pqmagic/</guid>
+      <guid>http://localhost:50105/project/pqmagic/</guid>
       <description>&lt;p&gt;The first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>YCrypt</title>
-      <link>http://localhost:1313/project/ycrypt/</link>
+      <link>http://localhost:50105/project/ycrypt/</link>
       <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/ycrypt/</guid>
+      <guid>http://localhost:50105/project/ycrypt/</guid>
       <description>&lt;p&gt;A high-performance SM2/3/4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Mobile-MSM</title>
-      <link>http://localhost:1313/project/msm-mobile/</link>
+      <link>http://localhost:50105/project/msm-mobile/</link>
       <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/msm-mobile/</guid>
+      <guid>http://localhost:50105/project/msm-mobile/</guid>
       <description>&lt;p&gt;The 2nd Prize in the ZPrize Competition of Accelerating MSM on Mobile @ YY Team&lt;/p&gt;</description>
     </item>
     

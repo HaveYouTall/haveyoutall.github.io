@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Teaching | Yituo He(Ho)</title>
-    <link>http://localhost:1313/teaching/</link>
-      <atom:link href="http://localhost:1313/teaching/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:50105/teaching/</link>
+      <atom:link href="http://localhost:50105/teaching/index.xml" rel="self" type="application/rss+xml" />
     <description>Teaching</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language>
     <image>
-      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
+      <url>http://localhost:50105/media/icon_hu2196129970520670611.png</url>
       <title>Teaching</title>
-      <link>http://localhost:1313/teaching/</link>
+      <link>http://localhost:50105/teaching/</link>
     </image>
     
     <item>
       <title></title>
-      <link>http://localhost:1313/teaching/js/</link>
+      <link>http://localhost:50105/teaching/js/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/teaching/js/</guid>
+      <guid>http://localhost:50105/teaching/js/</guid>
       <description>&lt;!-- ---
 title: Learn JavaScript
 summary: Easily learn JavaScript in 10 minutes!
@@ -88,7 +88,7 @@ Try it out:
 
 
 &lt;audio controls &gt;
-  &lt;source src=&#34;http://localhost:1313/teaching/js/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
+  &lt;source src=&#34;http://localhost:50105/teaching/js/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
 &lt;/audio&gt;
 
 
@@ -212,9 +212,9 @@ renders as
     
     <item>
       <title></title>
-      <link>http://localhost:1313/teaching/python/</link>
+      <link>http://localhost:50105/teaching/python/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/teaching/python/</guid>
+      <guid>http://localhost:50105/teaching/python/</guid>
       <description>&lt;!-- ---
 title: Learn Python
 summary: Easily learn Python in 10 minutes!
@@ -286,7 +286,7 @@ Try it out:
 
 
 &lt;audio controls &gt;
-  &lt;source src=&#34;http://localhost:1313/teaching/python/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
+  &lt;source src=&#34;http://localhost:50105/teaching/python/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
 &lt;/audio&gt;
 
 

@@ -191,8 +191,11 @@ main:
     url: /
     weight: 10
   - name: Publications
-    url: /#publications
+    url: /publications/
     weight: 20
+  - name: Recent News
+    url: /news/
+    weight: 25
   - name: Experience
     url: experience/
     weight: 30

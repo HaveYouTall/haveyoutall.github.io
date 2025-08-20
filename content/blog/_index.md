@@ -27,6 +27,4 @@ sections:
     design:
       view: card
       columns: 2
-      spacing:
-        padding: ["0", "0", "0", "0"]
 ---

@@ -3,7 +3,7 @@
 <!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=50105&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -44,7 +44,7 @@
   <meta name="description" content="The highly-customizable Hugo Academic theme powered by Hugo Blox Builder. Easily create your personal academic website." />
 
   
-  <link rel="alternate" hreflang="en-us" href="http://localhost:1313/tags/" />
+  <link rel="alternate" hreflang="en-us" href="http://localhost:50105/tags/" />
 
   
   
@@ -160,10 +160,10 @@
   
 
   
-  <link rel="icon" type="image/png" href="/media/icon_hu3247630877640252165.png" />
-  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu4166356570829923896.png" />
+  <link rel="icon" type="image/png" href="/media/icon_hu4607624127128226153.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu9035932268854345872.png" />
 
-  <link rel="canonical" href="http://localhost:1313/tags/" />
+  <link rel="canonical" href="http://localhost:50105/tags/" />
 
   
   
@@ -189,10 +189,10 @@
     <meta property="twitter:creator" content="@GetResearchDev" />
   
   <meta property="og:site_name" content="Yituo He(Ho)" />
-  <meta property="og:url" content="http://localhost:1313/tags/" />
+  <meta property="og:url" content="http://localhost:50105/tags/" />
   <meta property="og:title" content="Tags | Yituo He(Ho)" />
-  <meta property="og:description" content="The highly-customizable Hugo Academic theme powered by Hugo Blox Builder. Easily create your personal academic website." /><meta property="og:image" content="http://localhost:1313/media/icon_hu7729264130191091259.png" />
-    <meta property="twitter:image" content="http://localhost:1313/media/icon_hu7729264130191091259.png" /><meta property="og:locale" content="en-us" />
+  <meta property="og:description" content="The highly-customizable Hugo Academic theme powered by Hugo Blox Builder. Easily create your personal academic website." /><meta property="og:image" content="http://localhost:50105/media/icon_hu2196129970520670611.png" />
+    <meta property="twitter:image" content="http://localhost:50105/media/icon_hu2196129970520670611.png" /><meta property="og:locale" content="en-us" />
   
     
       <meta property="og:updated_time" content="2024-04-01T00:00:00&#43;00:00" />
@@ -306,6 +306,46 @@
     
   
   
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
   
   
   
@@ -590,18 +630,26 @@
 
 
 
-<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+  
+  
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/media/icon_hu5645896057064282098.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/media/icon_hu8868601710226682075.png">
+  <link rel="shortcut icon" href="/media/icon_hu5645896057064282098.png">
+  
 
 
-<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+
 <link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
 
 
-<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 
 
-<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+<link rel="apple-touch-icon" href="/media/icons/icon.jpg">
 
 
 <link rel="manifest" href="/media/icons/site.webmanifest">
@@ -679,17 +727,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     
-    titleElement.innerHTML = `
-      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        margin-right: 8px;
-        object-fit: cover;
-        flex-shrink: 0;
-      " onerror="this.style.display='none'">
-      <span class="typewriter-text"></span>
+    const iconImg = document.createElement('img');
+    const textSpan = document.createElement('span');
+    
+    iconImg.alt = 'Avatar';
+    iconImg.className = 'typewriter-avatar';
+    iconImg.style.cssText = `
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
     `;
+    
+    textSpan.className = 'typewriter-text';
+    
+    
+    iconImg.src = '/media/icons/icon.jpg';
+    iconImg.onerror = function() {
+      
+      this.style.display = 'none';
+    };
+    
+    titleElement.innerHTML = '';
+    titleElement.appendChild(iconImg);
+    titleElement.appendChild(textSpan);
     
     const textElement = titleElement.querySelector('.typewriter-text');
     
@@ -809,6 +872,20 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
+            
+            
+              
+              <img
+                fetchpriority="high"
+                decoding="async"
+                class=""
+                width="48"
+                height="36"
+                src="/media/icon_hu13545794371720282853.webp"
+                alt="Yituo He(Ho)" />
+            
+          
+        
         Yituo
       </a>
     </div>
@@ -860,7 +937,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a
           class="nav-link "
           
-          href="/#publications"
+          href="/publications/"
         >Publications</a
         >
       </li>
@@ -874,7 +951,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a
           class="nav-link "
           
-          href="/#recentnews"
+          href="/news/"
         >Recent News</a
         >
       </li>

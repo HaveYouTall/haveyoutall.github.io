@@ -3,7 +3,7 @@
 <!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=50105&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -44,7 +44,7 @@
   <meta name="description" content="Easily manage your projects - create ideation mind maps, Gantt charts, todo lists, and more!" />
 
   
-  <link rel="alternate" hreflang="en-us" href="http://localhost:1313/post/project-management/" />
+  <link rel="alternate" hreflang="en-us" href="http://localhost:50105/post/project-management/" />
 
   
   
@@ -158,10 +158,10 @@
   
 
   
-  <link rel="icon" type="image/png" href="/media/icon_hu3247630877640252165.png" />
-  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu4166356570829923896.png" />
+  <link rel="icon" type="image/png" href="/media/icon_hu4607624127128226153.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu9035932268854345872.png" />
 
-  <link rel="canonical" href="http://localhost:1313/post/project-management/" />
+  <link rel="canonical" href="http://localhost:50105/post/project-management/" />
 
   
   
@@ -186,10 +186,10 @@
     <meta property="twitter:creator" content="@GetResearchDev" />
   
   <meta property="og:site_name" content="Yituo He(Ho)" />
-  <meta property="og:url" content="http://localhost:1313/post/project-management/" />
+  <meta property="og:url" content="http://localhost:50105/post/project-management/" />
   <meta property="og:title" content="✅ Manage your projects | Yituo He(Ho)" />
-  <meta property="og:description" content="Easily manage your projects - create ideation mind maps, Gantt charts, todo lists, and more!" /><meta property="og:image" content="http://localhost:1313/post/project-management/featured.jpg" />
-    <meta property="twitter:image" content="http://localhost:1313/post/project-management/featured.jpg" /><meta property="og:locale" content="en-us" />
+  <meta property="og:description" content="Easily manage your projects - create ideation mind maps, Gantt charts, todo lists, and more!" /><meta property="og:image" content="http://localhost:50105/post/project-management/featured.jpg" />
+    <meta property="twitter:image" content="http://localhost:50105/post/project-management/featured.jpg" /><meta property="og:locale" content="en-us" />
   
     
       <meta
@@ -309,6 +309,46 @@
     
   
   
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
   
   
   
@@ -621,18 +661,26 @@
 
 
 
-<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+  
+  
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/media/icon_hu5645896057064282098.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/media/icon_hu8868601710226682075.png">
+  <link rel="shortcut icon" href="/media/icon_hu5645896057064282098.png">
+  
 
 
-<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+
 <link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
 
 
-<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 
 
-<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+<link rel="apple-touch-icon" href="/media/icons/icon.jpg">
 
 
 <link rel="manifest" href="/media/icons/site.webmanifest">
@@ -710,17 +758,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     
-    titleElement.innerHTML = `
-      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        margin-right: 8px;
-        object-fit: cover;
-        flex-shrink: 0;
-      " onerror="this.style.display='none'">
-      <span class="typewriter-text"></span>
+    const iconImg = document.createElement('img');
+    const textSpan = document.createElement('span');
+    
+    iconImg.alt = 'Avatar';
+    iconImg.className = 'typewriter-avatar';
+    iconImg.style.cssText = `
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
     `;
+    
+    textSpan.className = 'typewriter-text';
+    
+    
+    iconImg.src = '/media/icons/icon.jpg';
+    iconImg.onerror = function() {
+      
+      this.style.display = 'none';
+    };
+    
+    titleElement.innerHTML = '';
+    titleElement.appendChild(iconImg);
+    titleElement.appendChild(textSpan);
     
     const textElement = titleElement.querySelector('.typewriter-text');
     
@@ -840,6 +903,20 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
+            
+            
+              
+              <img
+                fetchpriority="high"
+                decoding="async"
+                class=""
+                width="48"
+                height="36"
+                src="/media/icon_hu13545794371720282853.webp"
+                alt="Yituo He(Ho)" />
+            
+          
+        
         Yituo
       </a>
     </div>
@@ -891,7 +968,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a
           class="nav-link "
           
-          href="/#publications"
+          href="/publications/"
         >Publications</a
         >
       </li>
@@ -905,7 +982,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a
           class="nav-link "
           
-          href="/#recentnews"
+          href="/news/"
         >Recent News</a
         >
       </li>
@@ -1137,6 +1214,20 @@ document.addEventListener('DOMContentLoaded', function() {
     href="/links/"
     
   >Links
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/"
+    
+  >Publications
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/news/"
+    
+  >Recent News
     </a></li>
         <li class="open"><a
     class="hb-sidebar-custom-link
@@ -1522,7 +1613,7 @@ Parallel 4   :         des6, after des4, 1d
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://twitter.com/intent/tweet?url=http%3A%2F%2Flocalhost%3A1313%2Fpost%2Fproject-management%2F&amp;text=%E2%9C%85&#43;Manage&#43;your&#43;projects"
+    href="https://twitter.com/intent/tweet?url=http%3A%2F%2Flocalhost%3A50105%2Fpost%2Fproject-management%2F&amp;text=%E2%9C%85&#43;Manage&#43;your&#43;projects"
     title="X"
     aria-label="X"
     id="share-link-x"
@@ -1540,7 +1631,7 @@ Parallel 4   :         des6, after des4, 1d
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A1313%2Fpost%2Fproject-management%2F&amp;t=%E2%9C%85&#43;Manage&#43;your&#43;projects"
+    href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A50105%2Fpost%2Fproject-management%2F&amp;t=%E2%9C%85&#43;Manage&#43;your&#43;projects"
     title="Facebook"
     aria-label="Facebook"
     id="share-link-facebook"
@@ -1560,7 +1651,7 @@ Parallel 4   :         des6, after des4, 1d
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="mailto:?subject=%E2%9C%85%20Manage%20your%20projects&amp;body=http%3A%2F%2Flocalhost%3A1313%2Fpost%2Fproject-management%2F"
+    href="mailto:?subject=%E2%9C%85%20Manage%20your%20projects&amp;body=http%3A%2F%2Flocalhost%3A50105%2Fpost%2Fproject-management%2F"
     title="Email"
     aria-label="Email"
     id="share-link-email"
@@ -1578,7 +1669,7 @@ Parallel 4   :         des6, after des4, 1d
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A1313%2Fpost%2Fproject-management%2F&amp;title=%E2%9C%85&#43;Manage&#43;your&#43;projects"
+    href="https://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A50105%2Fpost%2Fproject-management%2F&amp;title=%E2%9C%85&#43;Manage&#43;your&#43;projects"
     title="LinkedIn"
     aria-label="LinkedIn"
     id="share-link-linkedin"
@@ -1596,7 +1687,7 @@ Parallel 4   :         des6, after des4, 1d
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="whatsapp://send?text=%E2%9C%85&#43;Manage&#43;your&#43;projects%20http%3A%2F%2Flocalhost%3A1313%2Fpost%2Fproject-management%2F"
+    href="whatsapp://send?text=%E2%9C%85&#43;Manage&#43;your&#43;projects%20http%3A%2F%2Flocalhost%3A50105%2Fpost%2Fproject-management%2F"
     title="WhatsApp"
     aria-label="WhatsApp"
     id="share-link-whatsapp"
@@ -1647,7 +1738,7 @@ Parallel 4   :         des6, after des4, 1d
       Authors
     </div>
     <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
-      <a href="http://localhost:1313/" class="no-underline">
+      <a href="http://localhost:50105/" class="no-underline">
       何弈拓
       </a>
     </div>
