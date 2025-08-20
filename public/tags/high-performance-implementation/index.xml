@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>High Performance Implementation | Yituo He(Ho)</title>
+    <link>http://localhost:1313/tags/high-performance-implementation/</link>
+      <atom:link href="http://localhost:1313/tags/high-performance-implementation/index.xml" rel="self" type="application/rss+xml" />
+    <description>High Performance Implementation</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
+      <title>High Performance Implementation</title>
+      <link>http://localhost:1313/tags/high-performance-implementation/</link>
+    </image>
+    
+    <item>
+      <title>PQMagic</title>
+      <link>http://localhost:1313/project/pqmagic/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/pqmagic/</guid>
+      <description>&lt;p&gt;The first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>YCrypt</title>
+      <link>http://localhost:1313/project/ycrypt/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/ycrypt/</guid>
+      <description>&lt;p&gt;A high-performance SM2/3/4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

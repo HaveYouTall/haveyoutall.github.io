@@ -1,0 +1,13 @@
+# 网站左上角滚动显示的名字配置
+# 可以添加任意数量的名字，按顺序循环显示
+
+names:
+  - "Yituo"
+  - "何弈拓" 
+  - "HaveYouTall"
+
+# 打字机效果设置
+typewriter:
+  typing_speed: 100    # 打字速度 (毫秒)
+  deleting_speed: 50   # 删除速度 (毫秒)
+  pause_duration: 2000 # 每个名字显示完后的停留时间 (毫秒)

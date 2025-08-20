@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: July 11, 2025 --><html lang="en-us" dir="ltr"
+<!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -195,8 +195,6 @@
     <meta property="twitter:image" content="http://localhost:1313/media/icon_hu7729264130191091259.png" /><meta property="og:locale" content="en-us" />
   
     
-      <meta property="og:updated_time" content="2023-10-24T00:00:00&#43;00:00" />
-    
   
 
   
@@ -263,6 +261,50 @@
   
   
   
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
   
   
   
@@ -349,30 +391,6 @@
   
   
   
-  
-  
-  
-    
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-  
-  
     
       
       
@@ -428,23 +446,23 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
       
       
@@ -464,38 +482,6 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-      
-      
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 
 
@@ -598,8 +584,206 @@
   
     
       
+      
+
+
+
+<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+
+
+<link rel="manifest" href="/media/icons/site.webmanifest">
+
+
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
+
+
+<meta name="theme-color" content="#ffffff">
+      
+    
+  
+    
+      
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      
+    
+  
+    
+      
+      
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], 
+    typing_speed: 100,    
+    deleting_speed: 50,   
+    pause_duration: 2000  
+  };
+
+  
+  function initTypewriter() {
+    
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    
+    typeWriter();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+ 
+.typewriter-text {
+  min-width: 140px;  
+  display: inline-block;
+  text-align: left;
+}
+
+ 
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+ 
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px;  
+  flex-shrink: 0 !important;  
+}
+
+ 
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+ 
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
       
     
   
@@ -623,7 +807,7 @@
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
-        Your Name
+        Yituo
       </a>
     </div>
     
@@ -674,8 +858,8 @@
         <a
           class="nav-link "
           
-          href="/#papers"
-        >Papers</a
+          href="/#publications"
+        >Publications</a
         >
       </li>
       
@@ -688,22 +872,8 @@
         <a
           class="nav-link "
           
-          href="/#talks"
-        >Talks</a
-        >
-      </li>
-      
-      
-      
-      
-      
-      
-      <li class="nav-item">
-        <a
-          class="nav-link "
-          
-          href="/#news"
-        >News</a
+          href="/#recentnews"
+        >Recent News</a
         >
       </li>
       
@@ -742,10 +912,24 @@
       
       <li class="nav-item">
         <a
-          class="nav-link active"
+          class="nav-link "
           
-          href="/teaching/"
-        >Teaching</a
+          href="/blog/"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/links/"
+        >Links</a
         >
       </li>
       
@@ -1000,7 +1184,7 @@
       class="relative block aspect-video"
       href="/teaching/js/" >
 
-      <img alt="Learn JavaScript"
+      <img alt=""
            class="object-fill transition-all"
            data-nimg="fill"
            decoding="async"
@@ -1013,26 +1197,23 @@
     <div class="">
       <div class="flex gap-3">
         
-        <a href="/tags/javascript/"><span
-          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">JavaScript</span></a>
-        
       </div>
       
       <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2 dark:text-white"><a
         href="/teaching/js/" ><span
-        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">Learn JavaScript
+        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">
           </span></a>
       </h2>
       
       <div class="grow"><p class="mt-2 line-clamp-3 text-sm text-gray-500 dark:text-gray-400"><a
         href="/teaching/js/" >
-        Easily learn JavaScript in 10 minutes!</a></p>
+        </a></p>
       </div>
       <div class="flex-none">
         <div class="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400 cursor-default">
           
           
-          <time class="truncate text-sm" datetime="2023-10-24">Oct 24, 2023</time>
+          <time class="truncate text-sm" datetime="0001-01-01">Jan 1, 0001</time>
         </div>
       </div>
 
@@ -1065,7 +1246,7 @@
       class="relative block aspect-video"
       href="/teaching/python/" >
 
-      <img alt="Learn Python"
+      <img alt=""
            class="object-fill transition-all"
            data-nimg="fill"
            decoding="async"
@@ -1078,26 +1259,23 @@
     <div class="">
       <div class="flex gap-3">
         
-        <a href="/tags/python/"><span
-          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Python</span></a>
-        
       </div>
       
       <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2 dark:text-white"><a
         href="/teaching/python/" ><span
-        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">Learn Python
+        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">
           </span></a>
       </h2>
       
       <div class="grow"><p class="mt-2 line-clamp-3 text-sm text-gray-500 dark:text-gray-400"><a
         href="/teaching/python/" >
-        Easily learn Python in 10 minutes!</a></p>
+        </a></p>
       </div>
       <div class="flex-none">
         <div class="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400 cursor-default">
           
           
-          <time class="truncate text-sm" datetime="2023-10-24">Oct 24, 2023</time>
+          <time class="truncate text-sm" datetime="0001-01-01">Jan 1, 0001</time>
         </div>
       </div>
 
@@ -1178,7 +1356,7 @@
 
   
   <p class="powered-by text-center">
-    © 2025 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+    © 2025 Yituo He. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
   </p>
   
 

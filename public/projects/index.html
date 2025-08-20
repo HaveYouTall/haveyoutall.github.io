@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: July 11, 2025 --><html lang="en-us" dir="ltr"
+<!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -267,6 +267,50 @@
   
   
   
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
   
   
   
@@ -353,30 +397,6 @@
   
   
   
-  
-  
-  
-    
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-  
-  
     
       
       
@@ -432,23 +452,23 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
       
       
@@ -468,38 +488,6 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-      
-      
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 
 
@@ -602,8 +590,206 @@
   
     
       
+      
+
+
+
+<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+
+
+<link rel="manifest" href="/media/icons/site.webmanifest">
+
+
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
+
+
+<meta name="theme-color" content="#ffffff">
+      
+    
+  
+    
+      
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      
+    
+  
+    
+      
+      
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], 
+    typing_speed: 100,    
+    deleting_speed: 50,   
+    pause_duration: 2000  
+  };
+
+  
+  function initTypewriter() {
+    
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    
+    typeWriter();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+ 
+.typewriter-text {
+  min-width: 140px;  
+  display: inline-block;
+  text-align: left;
+}
+
+ 
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+ 
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px;  
+  flex-shrink: 0 !important;  
+}
+
+ 
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+ 
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
       
     
   
@@ -627,7 +813,7 @@
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
-        Your Name
+        Yituo
       </a>
     </div>
     
@@ -678,8 +864,8 @@
         <a
           class="nav-link "
           
-          href="/#papers"
-        >Papers</a
+          href="/#publications"
+        >Publications</a
         >
       </li>
       
@@ -692,22 +878,8 @@
         <a
           class="nav-link "
           
-          href="/#talks"
-        >Talks</a
-        >
-      </li>
-      
-      
-      
-      
-      
-      
-      <li class="nav-item">
-        <a
-          class="nav-link "
-          
-          href="/#news"
-        >News</a
+          href="/#recentnews"
+        >Recent News</a
         >
       </li>
       
@@ -748,8 +920,22 @@
         <a
           class="nav-link "
           
-          href="/teaching/"
-        >Teaching</a
+          href="/blog/"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/links/"
+        >Links</a
         >
       </li>
       
@@ -1009,13 +1195,13 @@
 
     <a
       class="relative block aspect-video"
-      href="https://github.com/pandas-dev/pandas" target="_blank" rel="noopener">
+      href="https://github.com/pqcrypto-cn/PQMagic" target="_blank" rel="noopener">
 
-      <img alt="Pandas"
+      <img alt="PQMagic"
            class="object-contain transition-all"
            data-nimg="fill"
            decoding="async"
-           fetchpriority="high" height="512" loading="lazy" src="/project/pandas/featured_hu225522667417520318.webp"
+           fetchpriority="high" height="512" loading="lazy" src="/project/pqmagic/featured_hu225522667417520318.webp"
            style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;"
            width="512"></a>
   </div>
@@ -1024,26 +1210,26 @@
     <div class="">
       <div class="flex gap-3">
         
-        <a href="/tags/hugo/"><span
-          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Hugo</span></a>
+        <a href="/tags/cryptography/"><span
+          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Cryptography</span></a>
         
       </div>
       
       <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2 dark:text-white"><a
-        href="https://github.com/pandas-dev/pandas" target="_blank" rel="noopener"><span
-        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">Pandas<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+        href="https://github.com/pqcrypto-cn/PQMagic" target="_blank" rel="noopener"><span
+        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">PQMagic<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
           </span></a>
       </h2>
       
       <div class="grow"><p class="mt-2 line-clamp-3 text-sm text-gray-500 dark:text-gray-400"><a
-        href="https://github.com/pandas-dev/pandas" target="_blank" rel="noopener">
-        Flexible and powerful data analysis / manipulation library for Python, providing labeled data structures.</a></p>
+        href="https://github.com/pqcrypto-cn/PQMagic" target="_blank" rel="noopener">
+        The first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries.</a></p>
       </div>
       <div class="flex-none">
         <div class="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400 cursor-default">
           
           
-          <time class="truncate text-sm" datetime="2023-10-26">Oct 26, 2023</time>
+          <time class="truncate text-sm" datetime="2024-04-01">Apr 1, 2024</time>
         </div>
       </div>
 
@@ -1077,13 +1263,13 @@
 
     <a
       class="relative block aspect-video"
-      href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">
+      href="https://pqcrypto.dev/benchmarkings/ycrypt/" target="_blank" rel="noopener">
 
-      <img alt="PyTorch"
+      <img alt="YCrypt"
            class="object-contain transition-all"
            data-nimg="fill"
            decoding="async"
-           fetchpriority="high" height="512" loading="lazy" src="/project/pytorch/featured_hu6045560180268948418.webp"
+           fetchpriority="high" height="512" loading="lazy" src="/project/ycrypt/featured_hu6045560180268948418.webp"
            style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;"
            width="512"></a>
   </div>
@@ -1092,26 +1278,26 @@
     <div class="">
       <div class="flex gap-3">
         
-        <a href="/tags/hugo/"><span
-          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Hugo</span></a>
+        <a href="/tags/cryptography/"><span
+          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Cryptography</span></a>
         
       </div>
       
       <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2 dark:text-white"><a
-        href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener"><span
-        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">PyTorch<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+        href="https://pqcrypto.dev/benchmarkings/ycrypt/" target="_blank" rel="noopener"><span
+        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">YCrypt<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
           </span></a>
       </h2>
       
       <div class="grow"><p class="mt-2 line-clamp-3 text-sm text-gray-500 dark:text-gray-400"><a
-        href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">
-        PyTorch is a Python package that provides tensor computation (like NumPy) with strong GPU acceleration.</a></p>
+        href="https://pqcrypto.dev/benchmarkings/ycrypt/" target="_blank" rel="noopener">
+        A high-performance SM2/3/4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup.</a></p>
       </div>
       <div class="flex-none">
         <div class="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400 cursor-default">
           
           
-          <time class="truncate text-sm" datetime="2023-10-26">Oct 26, 2023</time>
+          <time class="truncate text-sm" datetime="2024-04-01">Apr 1, 2024</time>
         </div>
       </div>
 
@@ -1145,13 +1331,13 @@
 
     <a
       class="relative block aspect-video"
-      href="https://github.com/scikit-learn/scikit-learn" target="_blank" rel="noopener">
+      href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener">
 
-      <img alt="scikit-learn"
+      <img alt="Mobile-MSM"
            class="object-contain transition-all"
            data-nimg="fill"
            decoding="async"
-           fetchpriority="high" height="512" loading="lazy" src="/project/scikit/featured_hu13212155656147023525.webp"
+           fetchpriority="high" height="512" loading="lazy" src="/project/msm-mobile/featured_hu13212155656147023525.webp"
            style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;"
            width="512"></a>
   </div>
@@ -1160,26 +1346,26 @@
     <div class="">
       <div class="flex gap-3">
         
-        <a href="/tags/hugo/"><span
-          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Hugo</span></a>
+        <a href="/tags/zero-knowledge-proof/"><span
+          class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-primary-700 dark:text-primary-300">Zero Knowledge Proof</span></a>
         
       </div>
       
       <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2 dark:text-white"><a
-        href="https://github.com/scikit-learn/scikit-learn" target="_blank" rel="noopener"><span
-        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">scikit-learn<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+        href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener"><span
+        class="bg-gradient-to-r from-primary-200 to-primary-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] dark:from-primary-800 dark:to-primary-900">Mobile-MSM<svg style="height: 1em;" class="inline-flex h-6 w-6 pl-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
           </span></a>
       </h2>
       
       <div class="grow"><p class="mt-2 line-clamp-3 text-sm text-gray-500 dark:text-gray-400"><a
-        href="https://github.com/scikit-learn/scikit-learn" target="_blank" rel="noopener">
-        scikit-learn is a Python module for machine learning built on top of SciPy and is distributed under the 3-Clause BSD license.</a></p>
+        href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener">
+        The 2nd Prize in the ZPrize Competition of Accelerating MSM on Mobile @ YY Team</a></p>
       </div>
       <div class="flex-none">
         <div class="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400 cursor-default">
           
           
-          <time class="truncate text-sm" datetime="2023-10-26">Oct 26, 2023</time>
+          <time class="truncate text-sm" datetime="2022-10-01">Oct 1, 2022</time>
         </div>
       </div>
 
@@ -1260,7 +1446,7 @@
 
   
   <p class="powered-by text-center">
-    © 2025 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+    © 2025 Yituo He. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
   </p>
   
 

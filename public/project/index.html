@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: July 11, 2025 --><html lang="en-us" dir="ltr"
+<!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -195,7 +195,7 @@
     <meta property="twitter:image" content="http://localhost:1313/media/icon_hu7729264130191091259.png" /><meta property="og:locale" content="en-us" />
   
     
-      <meta property="og:updated_time" content="2023-10-26T00:00:00&#43;00:00" />
+      <meta property="og:updated_time" content="2024-04-01T00:00:00&#43;00:00" />
     
   
 
@@ -263,6 +263,50 @@
   
   
   
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
   
   
   
@@ -349,30 +393,6 @@
   
   
   
-  
-  
-  
-    
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-  
-  
     
       
       
@@ -428,23 +448,23 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
       
       
@@ -464,38 +484,6 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-      
-      
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 
 
@@ -598,8 +586,206 @@
   
     
       
+      
+
+
+
+<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+
+
+<link rel="manifest" href="/media/icons/site.webmanifest">
+
+
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
+
+
+<meta name="theme-color" content="#ffffff">
+      
+    
+  
+    
+      
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      
+    
+  
+    
+      
+      
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], 
+    typing_speed: 100,    
+    deleting_speed: 50,   
+    pause_duration: 2000  
+  };
+
+  
+  function initTypewriter() {
+    
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    
+    typeWriter();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+ 
+.typewriter-text {
+  min-width: 140px;  
+  display: inline-block;
+  text-align: left;
+}
+
+ 
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+ 
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px;  
+  flex-shrink: 0 !important;  
+}
+
+ 
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+ 
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
       
     
   
@@ -623,7 +809,7 @@
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
-        Your Name
+        Yituo
       </a>
     </div>
     
@@ -674,8 +860,8 @@
         <a
           class="nav-link "
           
-          href="/#papers"
-        >Papers</a
+          href="/#publications"
+        >Publications</a
         >
       </li>
       
@@ -688,22 +874,8 @@
         <a
           class="nav-link "
           
-          href="/#talks"
-        >Talks</a
-        >
-      </li>
-      
-      
-      
-      
-      
-      
-      <li class="nav-item">
-        <a
-          class="nav-link "
-          
-          href="/#news"
-        >News</a
+          href="/#recentnews"
+        >Recent News</a
         >
       </li>
       
@@ -744,8 +916,22 @@
         <a
           class="nav-link "
           
-          href="/teaching/"
-        >Teaching</a
+          href="/blog/"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/links/"
+        >Links</a
         >
       </li>
       
@@ -841,20 +1027,20 @@
 
 
 
-<a href="https://github.com/scikit-learn/scikit-learn" target="_blank" rel="noopener" class="mb-5">
+<a href="https://pqcrypto.dev/benchmarkings/ycrypt/" target="_blank" rel="noopener" class="mb-5">
   <div class="md:flex">
     <div class="md:flex-shrink-0 overflow-hidden">
       
         
         
-      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/scikit/featured_hu12713017883134782206.webp" height="655" width="655" alt="scikit-learn">
+      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/ycrypt/featured_hu4468772248177525727.webp" height="655" width="655" alt="YCrypt">
       
     </div>
     <div class="p-8">
-      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">scikit-learn</div>
+      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">YCrypt</div>
       <p class="block mt-1 text-sm leading-tight font-medium text-black dark:text-white">
-        scikit-learn is a Python module for machine learning built on top of SciPy and is distributed under the 3-Clause BSD license.</p>
-      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Oct 26, 2023</p>
+        A high-performance SM2/3/4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup.</p>
+      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Apr 1, 2024</p>
     </div>
   </div>
 </a>
@@ -872,20 +1058,20 @@
 
 
 
-<a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener" class="mb-5">
+<a href="https://github.com/pqcrypto-cn/PQMagic" target="_blank" rel="noopener" class="mb-5">
   <div class="md:flex">
     <div class="md:flex-shrink-0 overflow-hidden">
       
         
         
-      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/pytorch/featured_hu4468772248177525727.webp" height="655" width="655" alt="PyTorch">
+      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/pqmagic/featured_hu9393480806236242150.webp" height="655" width="655" alt="PQMagic">
       
     </div>
     <div class="p-8">
-      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">PyTorch</div>
+      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">PQMagic</div>
       <p class="block mt-1 text-sm leading-tight font-medium text-black dark:text-white">
-        PyTorch is a Python package that provides tensor computation (like NumPy) with strong GPU acceleration.</p>
-      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Oct 26, 2023</p>
+        The first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries.</p>
+      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Apr 1, 2024</p>
     </div>
   </div>
 </a>
@@ -903,20 +1089,20 @@
 
 
 
-<a href="https://github.com/pandas-dev/pandas" target="_blank" rel="noopener" class="mb-5">
+<a href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener" class="mb-5">
   <div class="md:flex">
     <div class="md:flex-shrink-0 overflow-hidden">
       
         
         
-      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/pandas/featured_hu9393480806236242150.webp" height="655" width="655" alt="Pandas">
+      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/project/msm-mobile/featured_hu12713017883134782206.webp" height="655" width="655" alt="Mobile-MSM">
       
     </div>
     <div class="p-8">
-      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">Pandas</div>
+      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">Mobile-MSM</div>
       <p class="block mt-1 text-sm leading-tight font-medium text-black dark:text-white">
-        Flexible and powerful data analysis / manipulation library for Python, providing labeled data structures.</p>
-      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Oct 26, 2023</p>
+        The 2nd Prize in the ZPrize Competition of Accelerating MSM on Mobile @ YY Team</p>
+      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Oct 1, 2022</p>
     </div>
   </div>
 </a>
@@ -984,7 +1170,7 @@
 
   
   <p class="powered-by text-center">
-    © 2025 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+    © 2025 Yituo He. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
   </p>
   
 

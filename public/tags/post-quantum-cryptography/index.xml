@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Post Quantum Cryptography | Yituo He(Ho)</title>
+    <link>http://localhost:1313/tags/post-quantum-cryptography/</link>
+      <atom:link href="http://localhost:1313/tags/post-quantum-cryptography/index.xml" rel="self" type="application/rss+xml" />
+    <description>Post Quantum Cryptography</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
+      <title>Post Quantum Cryptography</title>
+      <link>http://localhost:1313/tags/post-quantum-cryptography/</link>
+    </image>
+    
+    <item>
+      <title>PQMagic</title>
+      <link>http://localhost:1313/project/pqmagic/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/pqmagic/</guid>
+      <description>&lt;p&gt;The first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: July 11, 2025 --><html lang="en-us" dir="ltr"
+<!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -315,6 +315,50 @@
   
   
   
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
   
   
   
@@ -401,30 +445,6 @@
   
   
   
-  
-  
-  
-    
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-  
-  
     
       
       
@@ -480,23 +500,23 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
       
       
@@ -516,38 +536,6 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-      
-      
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 
 
@@ -650,8 +638,206 @@
   
     
       
+      
+
+
+
+<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+
+
+<link rel="manifest" href="/media/icons/site.webmanifest">
+
+
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
+
+
+<meta name="theme-color" content="#ffffff">
+      
+    
+  
+    
+      
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      
+    
+  
+    
+      
+      
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], 
+    typing_speed: 100,    
+    deleting_speed: 50,   
+    pause_duration: 2000  
+  };
+
+  
+  function initTypewriter() {
+    
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    
+    typeWriter();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+ 
+.typewriter-text {
+  min-width: 140px;  
+  display: inline-block;
+  text-align: left;
+}
+
+ 
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+ 
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px;  
+  flex-shrink: 0 !important;  
+}
+
+ 
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+ 
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
       
     
   
@@ -675,7 +861,7 @@
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
-        Your Name
+        Yituo
       </a>
     </div>
     
@@ -726,8 +912,8 @@
         <a
           class="nav-link "
           
-          href="/#papers"
-        >Papers</a
+          href="/#publications"
+        >Publications</a
         >
       </li>
       
@@ -740,22 +926,8 @@
         <a
           class="nav-link "
           
-          href="/#talks"
-        >Talks</a
-        >
-      </li>
-      
-      
-      
-      
-      
-      
-      <li class="nav-item">
-        <a
-          class="nav-link "
-          
-          href="/#news"
-        >News</a
+          href="/#recentnews"
+        >Recent News</a
         >
       </li>
       
@@ -796,8 +968,22 @@
         <a
           class="nav-link "
           
-          href="/teaching/"
-        >Teaching</a
+          href="/blog/"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/links/"
+        >Links</a
         >
       </li>
       
@@ -914,6 +1100,69 @@
         <li class=""><a
     class="hb-sidebar-custom-link
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/"
+    
+  >Projects
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/pqmagic/"
+    
+  >PQMagic
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/ycrypt/"
+    
+  >YCrypt
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/msm-mobile/"
+    
+  >Mobile-MSM
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/"
+    
+  >Blog
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/first-blog-post/"
+    
+  >My First Blog Post
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/links/"
+    
+  >Links
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/post/"
     
   >Blog
@@ -966,74 +1215,10 @@
         <li class=""><a
     class="hb-sidebar-custom-link
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/project/"
-    
-  >Projects
-        <span data-hb-sidebar-toggle>
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
-        </span>
-    </a><div class="ltr:pr-0 overflow-hidden">
-        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/project/pandas/"
-    
-  >Pandas
-    </a>
-              
-            </li><li class="flex flex-col "><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/project/pytorch/"
-    
-  >PyTorch
-    </a>
-              
-            </li><li class="flex flex-col "><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/project/scikit/"
-    
-  >scikit-learn
-    </a>
-              
-            </li></ul>
-      </div></li>
-        <li class=""><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/experience/"
     
   >Experience
     </a></li>
-        <li class=""><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/teaching/"
-    
-  >Teaching
-        <span data-hb-sidebar-toggle>
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
-        </span>
-    </a><div class="ltr:pr-0 overflow-hidden">
-        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/teaching/js/"
-    
-  >Learn JavaScript
-    </a>
-              
-            </li><li class="flex flex-col "><a
-    class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
-    href="/teaching/python/"
-    
-  >Learn Python
-    </a>
-              
-            </li></ul>
-      </div></li>
         <li class=""><a
     class="hb-sidebar-custom-link
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
@@ -1066,6 +1251,34 @@
     href="/publication/conference-paper/"
     
   >An example conference paper
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/"
+    
+  >Teaching
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/js/"
+    
+  >index
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/python/"
+    
+  >index
     </a>
               
             </li></ul>
@@ -1604,7 +1817,7 @@
 
   
   <p class="powered-by text-center">
-    © 2025 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+    © 2025 Yituo He. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
   </p>
   
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: July 11, 2025 --><html lang="en-us" dir="ltr"
+<!-- Last Published: August 20, 2025 --><html lang="en-us" dir="ltr"
       data-wc-theme-default="system">
   
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -264,6 +264,50 @@
   
   
   
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
   
   
   
@@ -350,30 +394,6 @@
   
   
   
-  
-  
-  
-    
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-  
-  
     
       
       
@@ -429,23 +449,23 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
       
       
@@ -465,38 +485,6 @@
         
       
     
-      
-      
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-        
-        
-      
-    
-      
-      
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 
 
@@ -599,8 +587,206 @@
   
     
       
+      
+
+
+
+<link rel="icon" type="image/x-icon" href="/media/icons/favicon.ico">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/media/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/media/icons/android-chrome-512x512.png">
+
+
+<link rel="manifest" href="/media/icons/site.webmanifest">
+
+
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
+
+
+<meta name="theme-color" content="#ffffff">
+      
+    
+  
+    
+      
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      
+    
+  
+    
+      
+      
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], 
+    typing_speed: 100,    
+    deleting_speed: 50,   
+    pause_duration: 2000  
+  };
+
+  
+  function initTypewriter() {
+    
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    
+    typeWriter();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+ 
+.typewriter-text {
+  min-width: 140px;  
+  display: inline-block;
+  text-align: left;
+}
+
+ 
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+ 
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px;  
+  flex-shrink: 0 !important;  
+}
+
+ 
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+ 
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
       
     
   
@@ -624,7 +810,7 @@
     <div class="order-0 h-100">
       
       <a class="navbar-brand" href="/" title="Yituo He(Ho)">
-        Your Name
+        Yituo
       </a>
     </div>
     
@@ -675,8 +861,8 @@
         <a
           class="nav-link "
           
-          href="/#papers"
-        >Papers</a
+          href="/#publications"
+        >Publications</a
         >
       </li>
       
@@ -689,22 +875,8 @@
         <a
           class="nav-link "
           
-          href="/#talks"
-        >Talks</a
-        >
-      </li>
-      
-      
-      
-      
-      
-      
-      <li class="nav-item">
-        <a
-          class="nav-link "
-          
-          href="/#news"
-        >News</a
+          href="/#recentnews"
+        >Recent News</a
         >
       </li>
       
@@ -745,8 +917,22 @@
         <a
           class="nav-link "
           
-          href="/teaching/"
-        >Teaching</a
+          href="/blog/"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/links/"
+        >Links</a
         >
       </li>
       
@@ -817,7 +1003,7 @@
   <article class="prose prose-slate lg:prose-xl dark:prose-invert">
     <h1 class="lg:text-6xl">何弈拓</h1>
     <h2 id="about-me">About Me</h2>
-<p>Yituo He is currently a PhD student at Shanghai Jiao Tong University (上海交通大学), specializing in high-performance cryptographic algorithm implementation and security, cryptographic engineering, and blockchain security. He is the author of <a href="https://pqcrypto.dev" target="_blank" rel="noopener">PQMagic</a>(A high-performance post-quantum cryptography library), YCrypt (A high-performance SM2/SM3/SM4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup (national competition track)), and <a href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener">Mobile-MSM</a>(<a href="https://www.zprize.io/blog/announcing-zprize-results" target="_blank" rel="noopener">The 2nd Prize in the ZPrize Competition of Accelerating MSM on Mobile @ YY Team</a>). His research focuses on bridging theoretical cryptography with real-world efficiency, emphasizing the security of implementations, and also interested in web3 world.</p>
+<p><strong>Yituo He</strong> is currently a PhD student at Shanghai Jiao Tong University (上海交通大学), specializing in high-performance cryptographic algorithm implementation and security, cryptographic engineering, and blockchain security. He is the author of <a href="https://pqcrypto.dev/benchmarkings/pqmagic/" target="_blank" rel="noopener">PQMagic</a> (A high-performance post-quantum cryptography library), <a href="https://pqcrypto.dev/benchmarkings/ycrypt/" target="_blank" rel="noopener">YCrypt</a> (A high-performance SM2/SM3/SM4 cryptographic library, awarded 1st Prize (highest honor) in the 2024 Financial Cryptography Cup (2024年金融密码杯第二阶段赛事最高奖——一等奖)), and <a href="https://github.com/z-prize/2022-entries/tree/main/open-division/prize7-msm-mobile" target="_blank" rel="noopener">Mobile-MSM</a> (<a href="https://www.zprize.io/blog/announcing-zprize-results" target="_blank" rel="noopener">The 2nd Prize in the ZPrize Competition of Accelerating MSM on Mobile @ YY Team</a>). His research focuses on bridging theoretical cryptography with real-world efficiency, emphasizing the security of implementations, and also interested in web3 world.</p>
 
   </article>
 </div>
@@ -855,6 +1041,34 @@
       <p class="block mt-1 text-sm leading-tight font-medium text-black dark:text-white">
         An example talk using Hugo Blox Builder&#39;s Markdown slides feature.</p>
       <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Jun 1, 2030</p>
+    </div>
+  </div>
+</a>
+
+  
+  
+
+
+
+
+
+
+
+
+<a href="/blog/first-blog-post/"  class="mb-5">
+  <div class="md:flex">
+    <div class="md:flex-shrink-0 overflow-hidden">
+      
+        
+        
+      <img class="h-48 w-full object-cover md:w-48 hover:scale-125 transition duration-500 cursor-pointer object-cover" loading="lazy" src="/blog/first-blog-post/featured_hu15602501784382694164.webp" height="655" width="655" alt="My First Blog Post">
+      
+    </div>
+    <div class="p-8">
+      <div class="uppercase tracking-wide text-md text-primary-700 dark:text-primary-200 font-semibold">My First Blog Post</div>
+      <p class="block mt-1 text-sm leading-tight font-medium text-black dark:text-white">
+        This is an example blog post showing how to create and manage blog content.</p>
+      <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">Jan 1, 2024</p>
     </div>
   </div>
 </a>
@@ -1146,7 +1360,7 @@
 
   
   <p class="powered-by text-center">
-    © 2025 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+    © 2025 Yituo He. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
   </p>
   
 

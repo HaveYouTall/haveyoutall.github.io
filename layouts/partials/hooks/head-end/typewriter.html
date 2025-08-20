@@ -1,0 +1,162 @@
+<!-- 打字机效果和头像功能 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 配置数据 - 用户可以在这里修改名字列表
+  const config = {
+    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], // 在这里修改要显示的名字
+    typing_speed: 100,    // 打字速度 (毫秒)
+    deleting_speed: 50,   // 删除速度 (毫秒)  
+    pause_duration: 2000  // 每个名字显示完后的停留时间 (毫秒)
+  };
+
+  // 查找网站标题元素
+  function initTypewriter() {
+    // 寻找可能的标题元素
+    const selectors = [
+      '.navbar-brand', 
+      '.site-title', 
+      '.brand-text',
+      'a[href="/"]',
+      '.navbar .navbar-nav .nav-link[href="/"]'
+    ];
+    
+    let titleElement = null;
+    for (let selector of selectors) {
+      titleElement = document.querySelector(selector);
+      if (titleElement) break;
+    }
+    
+    // 如果找不到现有元素，查找导航栏并创建新元素
+    if (!titleElement) {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        // 创建新的标题元素
+        titleElement = document.createElement('a');
+        titleElement.href = '/';
+        titleElement.className = 'navbar-brand';
+        titleElement.style.cssText = `
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+          min-width: 180px;
+          flex-shrink: 0;
+        `;
+        navbar.insertBefore(titleElement, navbar.firstChild);
+      }
+    }
+    
+    if (!titleElement) {
+      console.log('无法找到标题元素，打字机效果未启动');
+      return;
+    }
+    
+    // 创建头像和文字容器
+    titleElement.innerHTML = `
+      <img src="/authors/admin/avatar.jpg" alt="Avatar" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+      " onerror="this.style.display='none'">
+      <span class="typewriter-text"></span>
+    `;
+    
+    const textElement = titleElement.querySelector('.typewriter-text');
+    
+    let currentNameIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    
+    function typeWriter() {
+      const currentName = config.names[currentNameIndex];
+      
+      if (isDeleting) {
+        // 删除字符
+        textElement.textContent = currentName.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        
+        if (currentCharIndex === 0) {
+          isDeleting = false;
+          currentNameIndex = (currentNameIndex + 1) % config.names.length;
+          setTimeout(typeWriter, config.typing_speed);
+        } else {
+          setTimeout(typeWriter, config.deleting_speed);
+        }
+      } else {
+        // 添加字符
+        textElement.textContent = currentName.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+        
+        if (currentCharIndex === currentName.length) {
+          // 完成当前名字，等待后开始删除
+          setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+          }, config.pause_duration);
+        } else {
+          setTimeout(typeWriter, config.typing_speed);
+        }
+      }
+    }
+    
+    // 开始打字机效果
+    typeWriter();
+  }
+  
+  // 等待页面完全加载后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    // 如果页面已经加载，稍微延迟执行以确保DOM完全渲染
+    setTimeout(initTypewriter, 100);
+  }
+});
+</script>
+
+<style>
+/* 确保打字机文字有合适的样式 */
+.typewriter-text {
+  min-width: 140px; /* 增加最小宽度，防止长名字挤压其他导航项 */
+  display: inline-block;
+  text-align: left;
+}
+
+/* 添加闪烁光标效果 */
+.typewriter-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 确保导航栏品牌元素对齐和固定宽度 */
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 180px; /* 设置最小宽度防止挤压 */
+  flex-shrink: 0 !important; /* 防止压缩 */
+}
+
+/* 确保导航栏容器有足够的弹性 */
+.navbar-nav {
+  flex-wrap: nowrap !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .typewriter-text {
+    min-width: 100px;
+  }
+  .navbar-brand {
+    min-width: 140px;
+  }
+}
+</style>
