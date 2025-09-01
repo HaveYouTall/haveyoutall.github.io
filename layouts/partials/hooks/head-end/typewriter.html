@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   // 配置数据 - 用户可以在这里修改名字列表
   const config = {
-    names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], // 在这里修改要显示的名字
+    names: ['Yituo', 'HaveYouTall', 'tty5'], // 在这里修改要显示的名字
     typing_speed: 100,    // 打字速度 (毫秒)
     deleting_speed: 50,   // 删除速度 (毫秒)  
     pause_duration: 2000  // 每个名字显示完后的停留时间 (毫秒)
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     textSpan.className = 'typewriter-text';
     
     // 尝试加载icon图片
-    iconImg.src = '/media/icons/icon.jpg';
+    iconImg.src = '/media/icons/icon.png';
     iconImg.onerror = function() {
       // 如果icon.jpg不存在，隐藏图片
       this.style.display = 'none';

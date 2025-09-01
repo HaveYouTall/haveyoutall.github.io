@@ -1,7 +1,7 @@
 <!-- 自定义 Favicon 配置 -->
 <!-- 使用Hugo资源处理 + 静态文件双重保障 -->
 
-{{ $icon := resources.Get "media/icon.png" }}
+{{ $icon := resources.Get "media/icons/icon.png" }}
 {{ if $icon }}
   {{ $icon32 := $icon.Resize "32x32" }}
   {{ $icon16 := $icon.Resize "16x16" }}
@@ -12,23 +12,3 @@
   <link rel="shortcut icon" href="{{ $icon32.RelPermalink }}">
   
 {{ end }}
-
-<!-- 静态文件备用方案 -->
-<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
-
-<!-- 传统favicon位置 -->
-<link rel="shortcut icon" href="/favicon.ico">
-
-<!-- Apple设备 -->
-<link rel="apple-touch-icon" href="/media/icons/icon.jpg">
-
-<!-- 网站清单 -->
-<link rel="manifest" href="/media/icons/site.webmanifest">
-
-<!-- Windows磁贴 -->
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-config" content="/media/icons/browserconfig.xml">
-
-<!-- 主题颜色 -->
-<meta name="theme-color" content="#ffffff">

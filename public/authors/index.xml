@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Yituo He(Ho)</title>
-    <link>http://localhost:50105/authors/</link>
-      <atom:link href="http://localhost:50105/authors/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/authors/</link>
+      <atom:link href="http://localhost:1313/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Yituo He(Ho)</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 01 Jun 2030 13:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:50105/media/icon_hu2196129970520670611.png</url>
+      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
       <title>Yituo He(Ho)</title>
-      <link>http://localhost:50105/authors/</link>
+      <link>http://localhost:1313/authors/</link>
     </image>
     
   </channel>

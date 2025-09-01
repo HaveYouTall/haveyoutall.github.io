@@ -4,7 +4,7 @@ date: 2024-04-01
 external_link: https://github.com/pqcrypto-cn/PQMagic
 tags:
   - Cryptography
-  - High performance implementation
+  - High Performance Implementation
   - Post Quantum Cryptography
 ---
 

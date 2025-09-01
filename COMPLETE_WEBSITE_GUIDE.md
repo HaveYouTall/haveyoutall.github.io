@@ -1,7 +1,5 @@
 # 学术网站完整配置和使用指南
 
-> 📍 **文档位置**: `new-blog-dir/COMPLETE_WEBSITE_GUIDE.md`
-
 ## 🎯 网站概述
 
 这是一个基于Hugo Blox Builder框架的学术个人网站，包含以下功能：
@@ -31,9 +29,7 @@ new-blog-dir/
 │   ├── projects.md            # 项目总览
 │   └── links.md               # 链接页面
 ├── assets/media/icons/
-│   └── icon.jpg               # 🖼️ 网站图标源 (打字机+浏览器)
-├── static/media/icons/
-│   └── icon.jpg               # 🖼️ 网站图标 (静态访问)
+│   └── icon.png               # 🖼️ 网站图标源 (打字机+浏览器)
 ├── config/_default/           # 网站配置
 │   ├── hugo.yaml              # 基本设置
 │   ├── menus.yaml             # 导航菜单
@@ -41,6 +37,7 @@ new-blog-dir/
 └── layouts/partials/hooks/head-end/
     ├── favicon.html           # 浏览器图标配置
     └── typewriter.html        # 打字机效果
+    ...
 ```
 
 ## 🖼️ 图片配置 (最重要)
@@ -50,8 +47,18 @@ new-blog-dir/
 | 用途 | 文件位置 | 要求 | 显示位置 |
 |------|----------|------|----------|
 | **Bio头像** | `content/authors/admin/avatar.jpg` | 正方形, 512px+ | 首页bio、About页 |
-| **打字机图标** | `assets/media/icons/icon.jpg` | 正方形, 512px+ | 左上角导航栏 |
-| **浏览器图标** | `assets/media/icons/icon.jpg` | 同上 | 浏览器标签页 |
+| **打字机图标** | `assets/media/icons/icon.png` | 正方形, 512px+ | 左上角导航栏 |
+| **浏览器图标** | `assets/media/icons/icon.png` | 同上 | 浏览器标签页 |
+
+> NOTE: 其中浏览器图标通过 `layouts/partials/hooks/head-end/favicon.html` 文件可以修改选用的图片目录。
+> 
+> 例如修改 `{{ $icon := resources.Get "media/icons/icon.png" }}` 的路径可以修改动态生成的图片，其查找路径在 `assets/media/icons/icon.png`.
+>
+> ~~也可以修改后面的 `<link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">` 等路径，这些的查找路径是 `static/media/icons/icon.png`. (但是删除上面的动态配置之后进行测试后面的内容好像不起作用，还需要进一步研究)~~
+>
+> ~~当然最终动态的网页都是在 public 目录下找的，例如 `public/media/icons/icon.png`~~
+>
+> NOTE 2: 打字机图标通过 `layouts/partials/hooks/head-end/typewriter.html` 文件中的 `iconImg.src = '/media/icons/icon.png';` 内容进行修改，文件的查找路径是 `assets/media/icons/icon.png`
 
 ### 更换图片步骤
 
@@ -65,7 +72,6 @@ cp your-new-photo.jpg content/authors/admin/avatar.jpg
 ```bash
 # 替换网站图标
 cp your-icon.jpg assets/media/icons/icon.jpg
-cp your-icon.jpg static/media/icons/icon.jpg
 
 # 清理缓存
 rm -rf resources/_gen/
@@ -160,7 +166,7 @@ main:
 
 修改第6行的名字列表：
 ```javascript
-names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], // 在这里修改名字
+names: ['Yituo', 'HaveYouTall', 'tty5'], // 在这里修改名字
 ```
 
 配置参数：
@@ -197,10 +203,11 @@ tags:
 EOF
 ```
 
-### 2. 添加发表文章 (Publications)
+### 2. 添加发表文章 (Publications) - 详细指南
 
 **位置**: `content/publication/paper-name/index.md`
 
+#### 创建新Publication的完整模板
 ```bash
 # 创建发表文章目录
 mkdir content/publication/my-paper/
@@ -208,44 +215,244 @@ mkdir content/publication/my-paper/
 # 创建内容文件
 cat > content/publication/my-paper/index.md << 'EOF'
 ---
-title: "论文标题"
+title: "你的论文标题"
 authors:
-- admin
-- 合作者姓名
+- admin                    # 使用admin表示自己
+- "合作者姓名"
+author_notes:
+- "第一作者"               # 可选：作者注释
+- "通讯作者"
 
-date: "2024-08-20T00:00:00Z"
-doi: "10.1000/journal.doi"
+date: "2024-01-01T00:00:00Z"
+publishDate: "2024-01-01T00:00:00Z"  # 页面发布日期
+doi: "10.1000/xxxx"        # DOI号码
 
-publication_types: ["2"]  # 1=会议, 2=期刊, 3=预印本
+# 发表类型 - 使用CSL标准
+publication_types: ["article-journal"]  # 期刊文章
+# 其他类型：
+# ["paper-conference"]     # 会议论文
+# ["chapter"]              # 书籍章节
+# ["book"]                 # 书籍
+# ["thesis"]               # 学位论文
+# ["report"]               # 技术报告
+# ["preprint"]             # 预印本
 
-publication: "期刊或会议名称"
-publication_short: "简称"
+publication: "*Nature Communications*, 15(1)"    # 期刊名称（斜体用*包围）
+publication_short: "Nat Commun"                  # 期刊简称
 
-abstract: "论文摘要..."
-summary: "论文简要总结"
+abstract: "你的论文摘要。详细描述研究背景、方法、结果和结论..."
+summary: "简短总结，用于在列表中显示..."
 
 tags:
-- Research
 - Machine Learning
+- Computer Vision
+- Deep Learning
+featured: true             # 是否为重点论文（会在首页突出显示）
 
-featured: true  # 是否为精选文章
+# 重要链接 - 所有链接都是可选的
+url_pdf: 'https://arxiv.org/pdf/xxxx.pdf'          # PDF链接（arXiv或期刊）
+url_code: 'https://github.com/your-username/code'   # 代码仓库链接
+url_dataset: 'https://doi.org/xxxx'                # 数据集链接
+url_poster: '/uploads/poster.pdf'                   # 海报链接（放在static目录）
+url_slides: '/uploads/slides.pdf'                   # 演示文稿链接
+url_video: 'https://youtube.com/watch?v=xxx'        # 视频链接
+url_source: 'https://nature.com/articles/xxx'       # 期刊源链接
 
+# 自定义链接 - 可添加任意链接
 links:
-- name: PDF
-  url: 'paper.pdf'
+- name: "Supplementary"
+  url: "/uploads/supplementary.pdf"
+  icon_pack: fas
+  icon: file-pdf
+- name: "Bibtex"
+  url: "/publication/my-paper/cite.bib"
+  icon_pack: fas  
+  icon: quote-right
 
-url_pdf: 'paper.pdf'
-url_code: 'https://github.com/your-username/code-repo'
+# 特色图片
+image:
+  caption: 'Figure 1: Overview of our proposed method'
+  focal_point: "Center"     # Smart/Center/TopLeft/Top/TopRight/Left/Right/BottomLeft/Bottom/BottomRight
+  preview_only: false       # false=在文章页面显示，true=只在列表预览
+
+# 关联项目（可选）
+projects: 
+- internal-project        # 项目文件夹名称
+
+# 关联幻灯片（可选）
+slides: example            # 幻灯片文件夹名称
 ---
 
-论文的详细介绍...
-EOF
+{{% callout note %}}
+点击上方的 *Cite* 按钮可以导入文献引用信息到参考文献管理软件。
+{{% /callout %}}
 
-# 添加PDF文件
-cp your-paper.pdf content/publication/my-paper/paper.pdf
+{{% callout note %}}
+点击 *Slides* 按钮查看相关演示文稿。
+{{% /callout %}}
+
+## 论文详细描述
+
+这里可以写论文的详细描述，包括：
+
+### 背景介绍
+研究背景和动机...
+
+### 方法说明  
+技术方法描述...
+
+### 实验结果
+实验设置和结果分析...
+
+### 代码示例
+
+```python
+# 示例代码
+def main():
+    print("Hello Research!")
 ```
 
-### 3. 添加博客文章
+### 补充材料
+
+支持丰富的Markdown格式，包括：
+- **粗体**、*斜体*
+- [外部链接](http://example.com)
+- 数学公式：$E = mc^2$
+- 代码块、图片、表格等
+
+{{% callout warning %}}
+重要提示内容
+{{% /callout %}}
+EOF
+```
+
+#### 添加附件文件
+```bash
+# 添加PDF文件（如果不是外部链接）
+cp your-paper.pdf content/publication/my-paper/paper.pdf
+
+# 添加特色图片
+cp featured-image.png content/publication/my-paper/featured.png
+
+# 添加海报或幻灯片到static目录
+cp poster.pdf static/uploads/poster.pdf
+cp slides.pdf static/uploads/slides.pdf
+
+# 添加BibTeX文件
+cat > content/publication/my-paper/cite.bib << 'EOF'
+@article{yourname2024paper,
+  title={Your Paper Title},
+  author={Your Name and Collaborator Name},
+  journal={Nature Communications},
+  volume={15},
+  number={1},
+  pages={1--10},
+  year={2024},
+  publisher={Nature Publishing Group}
+}
+EOF
+```
+
+#### Publication类型说明
+
+| 类型 | CSL标准名称 | 说明 | 示例 |
+|------|-------------|------|------|
+| 期刊文章 | `article-journal` | 学术期刊发表的论文 | Nature, Science |
+| 会议论文 | `paper-conference` | 会议发表的论文 | ICML, NeurIPS |
+| 书籍章节 | `chapter` | 书籍中的一章 | 教科书章节 |
+| 书籍 | `book` | 完整书籍 | 学术专著 |
+| 学位论文 | `thesis` | 硕士/博士论文 | PhD Thesis |
+| 技术报告 | `report` | 技术报告 | Tech Report |
+| 预印本 | `preprint` | 未正式发表的预印本 | arXiv |
+
+#### 链接类型说明
+
+- `url_pdf`: PDF文件链接（优先级最高）
+- `url_code`: 代码仓库（GitHub, GitLab等）
+- `url_dataset`: 数据集链接（如Kaggle, Zenodo等）
+- `url_poster`: 学术海报PDF
+- `url_slides`: 演示幻灯片
+- `url_video`: 演示视频（YouTube, Vimeo等）
+- `url_source`: 期刊官方链接
+
+#### 文件存放位置
+
+**本地文件**（放在论文目录内）：
+- `paper.pdf` - 论文PDF
+- `featured.png/jpg` - 特色图片
+- `cite.bib` - BibTeX引用
+
+**静态文件**（放在`static/uploads/`）：
+- 海报、幻灯片等大文件
+- 补充材料
+- 数据集文件
+
+### 3. 添加Recent News (最新动态) - 详细指南
+
+**创建新闻条目**
+1. 在 `content/post/` 下创建新文件夹（如 `news-title/`）
+2. 创建 `index.md` 文件：
+
+```yaml
+---
+title: "新闻标题"
+summary: "新闻简短摘要（显示在首页和列表中）"
+date: 2024-01-01          # 发布日期
+draft: false              # false=发布，true=草稿
+
+# 特色图片（可选）
+image:
+  caption: '图片说明文字'
+  focal_point: "Center"    # 焦点位置
+  placement: 1             # 图片位置：1=文章顶部，2=文章中部，3=文章底部
+
+authors:
+  - admin
+
+tags:
+  - Research
+  - News  
+  - Award
+  - Conference
+  
+categories:
+  - News
+---
+
+新闻详细内容，支持完整的Markdown格式...
+
+## 可以使用各种Markdown语法
+
+### 列表
+- 列表项1
+- 列表项2
+- 列表项3
+
+### 强调
+**重点内容** 和 *强调内容*
+
+### 链接和图片
+[外部链接](https://example.com)
+
+![本地图片](image.jpg "图片说明")
+
+### 引用块
+> 这是一个引用块，可以用来引用重要信息。
+
+### 代码
+`行内代码` 或者：
+
+```python
+# 代码块
+print("Hello World!")
+```
+
+{{% callout note %}}
+这是一个提示框，可以用来突出重要信息。
+{{% /callout %}}
+```
+
+### 4. 添加博客文章
 
 **位置**: `content/blog/blog-title/index.md`
 
@@ -291,7 +498,7 @@ EOF
 cp your-image.jpg content/blog/my-first-blog/featured.jpg
 ```
 
-### 4. 添加项目
+### 5. 添加项目 - 详细指南
 
 **位置**: `content/project/project-name/index.md`
 
@@ -369,35 +576,194 @@ EOF
 1. 删除对应的内容文件
 2. 从 `config/_default/menus.yaml` 删除导航项
 
-## 🔧 网站配置
+## 🔧 网站详细配置
 
-### 基本设置
+### 🎨 主题和外观配置
 
-**文件**: `config/_default/hugo.yaml`
-
-```yaml
-title: 你的网站标题
-baseURL: 'https://your-username.github.io/'
-```
-
-### 主题和外观
-
-**文件**: `config/_default/params.yaml`
-
+#### 基本外观设置 (`config/_default/params.yaml`)
 ```yaml
 appearance:
-  mode: system  # system/light/dark
-  color: emerald  # 主题色
+  mode: system          # system/light/dark
+  color: emerald        # 主题色彩：emerald/blue/green/pink/rose/slate/neutral/stone等
+```
 
+#### 网站基本信息 (`config/_default/hugo.yaml`)
+```yaml
+title: "你的姓名"              # 网站标题
+baseURL: 'https://yoursite.com/'  # 网站URL
+```
+
+#### 网站标题和Logo设置 (`config/_default/params.yaml`)
+```yaml
 header:
   navbar:
     enable: true
+    fixed_to_top: true
     show_search: true
     show_theme_chooser: true
     logo:
-      text: "显示的文字"
-      filename: "media/icons/icon.jpg"  # 图标路径
+      text: "Yituo"                    # 导航栏显示文字
+      filename: "icon.png"             # Logo文件名
 ```
+
+#### SEO优化配置
+```yaml
+marketing:
+  seo:
+    site_type: Person
+    description: '你的网站描述'
+    twitter: 'your_twitter'   # Twitter用户名
+  analytics:
+    google_analytics: 'G-XXXXXXXXXX'  # Google Analytics ID
+  verification:
+    google: ''                # Google Search Console验证码
+    baidu: ''                # 百度站长验证码
+```
+
+### 🧭 导航栏详细配置
+
+#### 修改导航菜单 (`config/_default/menus.yaml`)
+```yaml
+main:
+  - name: Bio              # 显示名称
+    url: /                 # 链接地址
+    weight: 10            # 排序权重（越小越靠前）
+  - name: Publications
+    url: /publications/
+    weight: 20
+  - name: Recent News
+    url: /news/
+    weight: 25
+```
+
+#### 增加导航项
+在 `config/_default/menus.yaml` 中添加新条目：
+```yaml
+  - name: 新页面
+    url: /new-page/
+    weight: 35            # 设置合适的权重控制位置
+```
+
+#### 删除导航项
+直接删除或注释掉对应的条目即可。
+
+#### 导航栏样式调整
+修改 `layouts/partials/hooks/head-end/typewriter.html` 中的CSS：
+```css
+.navbar-brand {
+  min-width: 180px;        /* 调整最小宽度 */
+  margin-left: 20px;       /* 调整左边距 */
+}
+
+.navbar {
+  padding: 1rem 2rem;      /* 调整导航栏内边距 */
+}
+```
+
+### 🖼️ 图片资源详细管理
+
+#### 图片用途和位置详表
+| 用途 | 文件位置 | 尺寸建议 | 说明 |
+|------|----------|----------|------|
+| Bio头像 | `content/authors/admin/avatar.jpg` | 400x400px | 个人简介页面显示 |
+| 网站图标 | `assets/media/icons/icon.jpg` | 256x256px | 打字机效果+浏览器图标源 |
+| 网站图标(静态) | `static/media/icons/icon.jpg` | 256x256px | 直接访问路径 |
+| 浏览器图标 | `static/favicon.ico` | 32x32px | 浏览器标签页图标 |
+
+#### 图片更新脚本使用
+使用提供的脚本：
+```bash
+./update-website-images.sh bio ~/path/to/your-photo.jpg
+./update-website-images.sh icon ~/path/to/your-icon.jpg
+```
+
+### ⚡ 打字机效果详细配置
+
+#### 修改显示的名字 (`layouts/partials/hooks/head-end/typewriter.html`)
+```javascript
+const config = {
+  names: ['Yituo', '何弈拓', 'HaveYouTall', 'tty5'], // 修改这里的名字数组
+  typing_speed: 100,    // 打字速度 (毫秒)
+  deleting_speed: 50,   // 删除速度 (毫秒)
+  pause_duration: 2000  // 停留时间 (毫秒)
+};
+```
+
+#### 调整打字机头像和样式
+头像会自动加载 `/media/icons/icon.jpg`，样式可在CSS中调整：
+```css
+.typewriter-avatar {
+  width: 32px;          /* 调整头像大小 */
+  height: 32px;
+  margin-right: 8px;    /* 调整与文字的间距 */
+}
+
+.typewriter-text {
+  min-width: 140px;     /* 调整文字区域宽度 */
+}
+```
+
+### 🏠 主页布局详细配置
+
+#### 修改主页sections (`content/_index.md`)
+
+```yaml
+design:
+  spacing: "6rem"           # 整体区块间距
+
+sections:
+  - block: resume-biography-3    # 个人简介区块
+    content:
+      username: admin            # 使用的用户配置
+      text: ""                   # 额外文字
+      button:                    # 下载简历按钮
+        text: Download CV
+        url: uploads/resume.pdf
+    design:
+      css_class: dark           # 样式类
+      background:
+        color: black            # 背景颜色
+        image:
+          filename: stacked-peaks.svg  # 背景图片
+          filters:
+            brightness: 1.0
+          size: cover
+          position: center
+          parallax: false
+      
+  - block: collection          # 内容集合区块
+    id: recentnews              # 区块ID
+    content:
+      title: Recent News       # 区块标题
+      subtitle: ''             # 副标题
+      page_type: post         # 显示的内容类型
+      count: 5                # 显示数量（0=全部）
+      order: desc             # 排序：desc/asc
+      filters:                # 过滤条件
+        author: ""
+        category: ""
+        tag: ""
+        exclude_featured: false
+    design:
+      view: date-title-summary # 显示样式
+      spacing:
+        padding: ["4rem", 0, 0, 0]  # 内边距 [top, right, bottom, left]
+```
+
+#### 可用的区块类型
+- `resume-biography-3` - 个人简介
+- `collection` - 内容集合
+- `markdown` - Markdown内容
+- `features` - 特性展示
+- `accomplishments` - 成就展示
+- `contact` - 联系表单
+
+#### 可用的显示样式（view）
+- `date-title-summary` - 日期+标题+摘要
+- `citation` - 引用格式（适合论文）
+- `compact` - 紧凑格式
+- `showcase` - 展示格式
+- `masonry` - 瀑布流格式
 
 ## 🚀 网站部署
 

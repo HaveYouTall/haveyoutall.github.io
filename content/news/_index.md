@@ -18,6 +18,8 @@ sections:
       count: 0
       # Filter on criteria
       filters:
+        folders:
+          - post
         author: ""
         category: ""
         tag: ""
