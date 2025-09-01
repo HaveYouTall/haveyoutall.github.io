@@ -1,5 +1,7 @@
 <!-- 打字机效果和头像功能 -->
+
 <script>
+const iconPath = '{{ (resources.Get "media/icons/icon.png").RelPermalink }}';
 document.addEventListener('DOMContentLoaded', function() {
   // 配置数据 - 用户可以在这里修改名字列表
   const config = {
@@ -70,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
     textSpan.className = 'typewriter-text';
     
     // 尝试加载icon图片
-    iconImg.src = '/media/icons/icon.png';
+    // iconImg.src = '/media/icons/icon.png';
+    iconImg.src = iconPath;
     iconImg.onerror = function() {
       // 如果icon.jpg不存在，隐藏图片
       this.style.display = 'none';
