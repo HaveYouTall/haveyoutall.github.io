@@ -4,12 +4,13 @@ date: 2024-01-01
 type: landing
 
 design:
-  spacing: "6rem"
+  spacing: "4rem"
 
 sections:
   - block: collection
     content:
       title: Recent Publications
+      subtitle: ""
       text: ""
       filters:
         folders:

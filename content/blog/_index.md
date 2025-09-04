@@ -3,7 +3,7 @@ title: Blog
 type: landing
 
 design:
-  spacing: "6rem"
+  spacing: "4rem"
 
 sections:
   - block: collection
