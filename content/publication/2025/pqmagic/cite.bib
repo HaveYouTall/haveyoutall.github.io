@@ -1,0 +1,16 @@
+@InProceedings{he2025pqmagic,
+author="He, Yituo
+and Hao, Xinpeng
+and Li, Juanru
+and Yu, Yu",
+editor="Manulis, Mark",
+title="PQMagic: Towards Secure and Efficient Post Quantum Cryptography Implementations",
+booktitle="Applied Cryptography and Network Security Workshops",
+year="2026",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="152--172",
+abstract="Quantum computing threatens current public-key cryptosystems, driving the need for post-quantum cryptography (PQC). However, PQC implementations face additional risks. We find implementation issues in existing PQC libraries (e.g., pq-crystals and liboqs), while they also fail to fully leverage modern processors. To address these issues, we propose four optimization strategies: Branch Optimization, Register Allocation, Vectorized Execution, and Secure and Efficient Pipelining. These strategies minimize execution branches, instruction counts, and memory accesses while enhancing security, mitigating the implementation from side-channel attack risk. We implement these in PQMagic, a high-performance PQC library for ML-KEM and ML-DSA, and it significantly outperforms state-of-the-art libraries. For ML-KEM-1024, it achieves efficiency gains of up to 1.77x, 1.79x, and 1.52x for Keygen, Encaps, and Decaps, while reducing instruction counts and memory access overhead by up to 47.1{\%} and 60.1{\%}. For ML-DSA-87, it improves Keygen, Sign, and Verify by up to 2.24x, 1.89x, and 2.04x, with instruction counts and memory access reduced by up to 44.4{\%} and 64.5{\%}. Additionally, PQMagic eliminates up to 90.9{\%} of branch operations in matrix expansion for ML-DSA. Besides, PQMagic also outperforms traditional cryptographic algorithm combinations (RSA-2048/ECDSA-256 + ECDH) selected from OpenSSL. It only has a slight gap at the highest level L5 compared to ECDSA-256 + ECDH combination. Our work shows that combining modern hardware capabilities with careful instruction scheduling enables secure and efficient PQC implementations, paving the way for post-quantum cryptographic migration.",
+isbn="978-3-032-01806-9"
+}
+

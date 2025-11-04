@@ -306,11 +306,11 @@ slides: example            # 幻灯片文件夹名称
 
 ### 代码示例
 
-```python
-# 示例代码
-def main():
-    print("Hello Research!")
-```
+# ```python
+# # 示例代码
+# def main():
+#     print("Hello Research!")
+# ```
 
 ### 补充材料
 
@@ -442,10 +442,10 @@ categories:
 ### 代码
 `行内代码` 或者：
 
-```python
-# 代码块
-print("Hello World!")
-```
+# ```python
+# # 代码块
+# print("Hello World!")
+# ```
 
 {{% callout note %}}
 这是一个提示框，可以用来突出重要信息。
@@ -487,10 +487,10 @@ image:
 - 数学公式
 - 引用
 
-```python
-def hello():
-    print("Hello World!")
-```
+# ```python
+# def hello():
+#     print("Hello World!")
+# ```
 
 EOF
 

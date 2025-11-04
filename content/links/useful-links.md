@@ -1,4 +1,12 @@
-#### Academic Resources
+#### 快醒醒要截稿啦
+
+- [CCF DDL](https://ccfddl.com/)
+
+#### 谁才是最强 AI
+
+- [AI Trading in Real Market](https://nof1.ai/)
+
+<!-- #### Academic Resources -->
 
 <!-- ##### Research Tools
 - [Google Scholar](https://scholar.google.com/) - Academic search engine
