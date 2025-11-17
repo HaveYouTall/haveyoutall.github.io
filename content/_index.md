@@ -22,7 +22,7 @@ sections:
     design:
       css_class: dark
       background:
-        color: black
+        color: black #transparent  # 修改为透明，让绿色图案更明显
         image:
           # Add your image background to `assets/media/`.
           filename: stacked-peaks.svg
