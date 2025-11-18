@@ -225,6 +225,28 @@ h6 code {
   font-weight: 500;
 }
 
+/* Remove any backticks added by CSS pseudo-elements */
+p code::before,
+p code::after,
+li code::before,
+li code::after,
+td code::before,
+td code::after,
+h1 code::before,
+h1 code::after,
+h2 code::before,
+h2 code::after,
+h3 code::before,
+h3 code::after,
+h4 code::before,
+h4 code::after,
+h5 code::before,
+h5 code::after,
+h6 code::before,
+h6 code::after {
+  content: '' !important;
+}
+
 /* Dark mode support for inline code */
 [data-theme="dark"] p code,
 [data-theme="dark"] li code,
