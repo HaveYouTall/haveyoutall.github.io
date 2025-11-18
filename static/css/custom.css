@@ -203,3 +203,39 @@
     gap: 1rem;
   }
 }
+
+/* Inline code styling - make backtick code more visible */
+/* Only target inline code, not code blocks */
+p code,
+li code,
+td code,
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  color: #d63384;
+  font-weight: 500;
+}
+
+/* Dark mode support for inline code */
+[data-theme="dark"] p code,
+[data-theme="dark"] li code,
+[data-theme="dark"] td code,
+[data-theme="dark"] h1 code,
+[data-theme="dark"] h2 code,
+[data-theme="dark"] h3 code,
+[data-theme="dark"] h4 code,
+[data-theme="dark"] h5 code,
+[data-theme="dark"] h6 code {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f472b6;
+}

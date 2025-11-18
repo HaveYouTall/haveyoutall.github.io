@@ -14,6 +14,7 @@ image:
   caption: 'ACNS-SCI 2025'
 ---
 
+{{< toc >}}
 
 [PQMagic](https://pqcrypto.dev) is the first high-performance post-quantum cryptographic algorithm library in China. It outperforms the current leading libraries. We are honored to present this work at ACNS-SCI 2025.
 
