@@ -8,6 +8,7 @@ tags:
   - Driver
   - NVIDIA
   - Debian
+  - Linux
   - GRUB
 
 # Featured image
