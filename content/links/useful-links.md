@@ -6,6 +6,10 @@
 
 - [AI Trading in Real Market](https://nof1.ai/)
 
+#### 其他
+
+- [Img2ASCII](https://www.asciiart.eu/image-to-ascii)
+
 <!-- #### Academic Resources -->
 
 <!-- ##### Research Tools
